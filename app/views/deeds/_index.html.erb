@@ -6,7 +6,7 @@
 
 <div id="deeds">
   <% @deeds.each do |deed| %>
-    <%= render deed %>
+    <%= render "deeds/deed" %>
     <p>
       <%= link_to "Show this deed", deed %>
     </p>
