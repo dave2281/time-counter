@@ -10,14 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_15_092247) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_15_102630) do
   create_table "deeds", force: :cascade do |t|
     t.string "title"
     t.string "description"
-    t.string "time"
+    t.string "total_time"
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "timer_running", default: false
+    t.datetime "timer_start_time"
     t.index ["user_id"], name: "index_deeds_on_user_id"
   end
 

@@ -2,6 +2,10 @@
 
 <%= render @deed %>
 
+<%= @deed.formatted_total_time %>
+
+<%= button_to 'Start/Stop Timer', toggle_timer_deed_path(@deed), method: :post %>
+
 <div>
   <%= link_to "Edit this deed", edit_deed_path(@deed) %> |
   <%= link_to "Back to deeds", deeds_path %>

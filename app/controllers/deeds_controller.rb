@@ -1,5 +1,16 @@
 class DeedsController < ApplicationController
-  before_action :set_deed, only: %i[ show edit update destroy ]
+  before_action :set_deed, only: [:show, :edit, :update, :destroy, :toggle_timer]
+
+  def toggle_timer
+    if @deed.timer_running?
+      @deed.stop_timer!
+      notice = "Таймер остановлен."
+    else
+      @deed.start_timer!
+      notice = "Таймер запущен."
+    end
+    redirect_to @deed, notice: notice
+  end
 
   def index
     @deeds = Deed.all
@@ -42,22 +53,17 @@ class DeedsController < ApplicationController
   end
 
   def destroy
-    @deed.destroy!
-
-    if @deed.destroy
-      format.html { redirect_to deeds_path, notice: "Deed was successfully destroyed." }
-    else
-      format.html { redirect_to deeds_path, alert: "Deed could not be destroyed." }
-    end
-
+    @deed.destroy
+    redirect_to deeds_url, notice: "Deed was successfully destroyed."
   end
 
   private
+
     def set_deed
-      @deed = Deed.find(params.expect(:id))
+      @deed = Deed.find(params[:id])
     end
 
     def deed_params
-      params.require(:deed).permit(:title, :description, :time)
-    end    
+      params.require(:deed).permit(:title, :description, :total_time)
+    end
 end
