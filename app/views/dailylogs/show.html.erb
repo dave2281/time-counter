@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @dailylog %>
+
+<div>
+  <%= link_to "Edit this dailylog", edit_dailylog_path(@dailylog) %> |
+  <%= link_to "Back to dailylogs", dailylogs_path %>
+
+  <%= button_to "Destroy this dailylog", @dailylog, method: :delete %>
+</div>

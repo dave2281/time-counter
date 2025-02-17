@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @deed %>
+
+<div>
+  <%= link_to "Edit this deed", edit_deed_path(@deed) %> |
+  <%= link_to "Back to deeds", deeds_path %>
+
+  <%= button_to "Destroy this deed", @deed, method: :delete %>
+</div>

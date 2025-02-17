@@ -1,0 +1,11 @@
+<% content_for :title, "New deed" %>
+
+<h1>New deed</h1>
+
+<%= render "form", deed: @deed %>
+
+<br>
+
+<div>
+  <%= link_to "Back to deeds", deeds_path %>
+</div>
