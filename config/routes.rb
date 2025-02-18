@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "pages/main"
   resources :deeds
   resources :dailylogs
   resource :session
