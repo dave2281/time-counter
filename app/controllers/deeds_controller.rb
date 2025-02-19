@@ -8,6 +8,7 @@ class DeedsController < ApplicationController
 
   # GET /deeds/1 or /deeds/1.json
   def show
+    @deed = Deed.find(params[:id])
   end
 
   # GET /deeds/new

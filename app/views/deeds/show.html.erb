@@ -1,10 +1,60 @@
-<p style="color: green"><%= notice %></p>
+<h1><%= @deed.title %></h1>
+<p><%= @deed.description %></p>
+<p id="total-time"><%= @deed.total_time %></p>
+<p id="today-time"><%= @deed.today %></p>
 
-<%= render @deed %>
+<%= turbo_stream_from @deed %>
 
-<div>
-  <%= link_to "Edit this deed", edit_deed_path(@deed) %> |
-  <%= link_to "Back to deeds", deeds_path %>
+<!-- Лампочка для индикации состояния таймера -->
+<div id="timer-indicator" style="width: 20px; height: 20px; border-radius: 50%; background-color: red;"></div>
 
-  <%= button_to "Destroy this deed", @deed, method: :delete %>
-</div>
+<!-- Кнопка для запуска/остановки таймера -->
+<button id="toggle-timer" data-deed-id="<%= @deed.id %>">Запустить/Остановить</button>
+
+<script>
+document.addEventListener("turbo:load", function() {
+  const indicator = document.getElementById("timer-indicator");
+  const button = document.getElementById("toggle-timer");
+  const deedId = button.getAttribute("data-deed-id");
+  const totalTime = document.getElementById("total-time");
+
+  // Функция для обновления цвета лампочки
+  function updateIndicator(running) {
+    console.log("Текущий статус таймера:", running ? "запущен" : "остановлен");  // Отладка
+    indicator.style.backgroundColor = running ? "green" : "red";
+  }
+  
+  function updateTotalTime(total_time) {
+    console.log("Total time: ", total_time)
+  }
+
+  // Проверяем текущий статус таймера при загрузке страницы
+  fetch(`/daily_logs/timer_status?deed_id=${deedId}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log("Статус таймера с сервера:", data.running);  // Отладка
+      updateIndicator(data.running);
+    })
+    .catch(error => console.error("Ошибка при получении статуса таймера:", error));
+
+  // Обработчик клика по кнопке для переключения таймера
+  button.addEventListener("click", function() {
+    fetch("/daily_logs/toggle_timer", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+      },
+      body: JSON.stringify({ deed_id: deedId })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Ответ от сервера после нажатия кнопки:", data.running);  // Отладка
+      // Обновляем лампочку в зависимости от состояния таймера
+      updateIndicator(data.running);
+    })
+    .catch(error => console.error("Ошибка:", error));
+  });
+});
+
+</script>

@@ -1,5 +1,41 @@
-class DailylogsController < ApplicationController
+class DailyLogsController < ApplicationController
   before_action :set_dailylog, only: %i[ show edit update destroy ]
+
+ def toggle_timer
+  cache_key = "daily_log_#{Current.user.id}_#{params[:deed_id]}"
+  start_time = Rails.cache.read(cache_key)
+
+  if start_time.nil?
+    # Таймер запускается
+    Rails.cache.write(cache_key, Time.current)
+    render json: { running: true }
+  else
+    # Таймер останавливается
+    daily_log = DailyLog.create!(
+      user_id: Current.user.id,
+      deed_id: params[:deed_id],
+      start_time: start_time,
+      end_time: Time.current
+    )
+
+    # Удаляем временные данные из кэша
+    Rails.cache.delete(cache_key)
+
+    render json: { running: false }
+  end
+end
+
+
+  def timer_status
+    cache_key = "daily_log_#{Current.user.id}_#{params[:deed_id]}"
+    start_time = Rails.cache.read(cache_key)
+  
+    if start_time.nil?
+      render json: { running: false }
+    else
+      render json: { running: true }
+    end
+  end  
 
   # GET /dailylogs or /dailylogs.json
   def index
@@ -65,6 +101,6 @@ class DailylogsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def dailylog_params
-      params.fetch(:dailylog, {})
+      params.require(:dailylog).permit(:user_id, :deed_id, :start_time, :end_time)
     end
 end

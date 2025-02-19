@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
   root "pages#main"
   get "calendar", to: "pages#calendar", as: :calendar
-  resources :deeds do
-    post 'toggle_timer', on: :member
-  end
+  resources :deeds
+  post "daily_logs/toggle_timer", to: "daily_logs#toggle_timer"
+  get 'daily_logs/timer_status', to: 'daily_logs#timer_status'
+
   resource :session
   resources :passwords, param: :token
   
