@@ -60,11 +60,10 @@ class DeedsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_deed
-      @deed = Deed.find(params.expect(:id))
-    end
+      @deed = Deed.find(params.require(:id))
+    end    
 
-    # Only allow a list of trusted parameters through.
     def deed_params
-      params.fetch(:deed, {})
-    end
+      params.require(:deed).permit(:title, :description, :user_id)
+    end    
 end

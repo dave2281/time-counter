@@ -14,6 +14,10 @@ users = []
 end
 puts "Создано пользователей: #{User.count}"
 
+User.create!(email_address: "admin@gmail.com",
+             password_digest: BCrypt::Password.create('password123')
+)
+
 deeds = []
 users.each do |user|
   3.times do |i|
@@ -30,7 +34,7 @@ puts "Создано дел: #{Deed.count}"
 deeds.each do |deed|
   4.times do
     start_time = Faker::Time.between(from: 5.years.ago, to: Time.zone.now)
-    end_time = start_time + rand(1..4).hours + rand(0..59).minutes
+    end_time = start_time + rand(10..50).hours + rand(0..59).minutes + rand(0.59).seconds
     DailyLog.create!(
       deed: deed,
       user: deed.user,
