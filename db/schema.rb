@@ -24,8 +24,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_17_140921) do
 
   create_table "deeds", force: :cascade do |t|
     t.string "total_time"
-    t.string "title"
+    t.string "title", null: false
     t.string "description"
+    t.boolean "finished", default: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

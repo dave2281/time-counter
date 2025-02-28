@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
   def main
-    @deeds = Deed.all.where(user_id: Current.user.id)
+    @pagy, @records = pagy(Product.some_scope)
+
   end
 end

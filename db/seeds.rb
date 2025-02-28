@@ -25,6 +25,7 @@ users.each do |user|
       user: user,
       title: "Дело ##{i + 1} для #{user.email_address}",
       description: "Описание для дела ##{i + 1}",
+      finished: [true, false].sample,
       total_time: nil
     )
   end
@@ -44,13 +45,3 @@ deeds.each do |deed|
   end
 end
 puts "Создано дневных логов: #{DailyLog.count}"
-
-# Создаём сессии для пользователей
-users.each do |user|
-  Session.create!(
-    user: user,
-    ip_address: "192.168.1.#{rand(1..255)}",
-    user_agent: "Mozilla/5.0 (compatible; Bot/#{rand(1..100)})"
-  )
-end
-puts "Создано сессий: #{Session.count}"

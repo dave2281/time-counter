@@ -1,11 +1,6 @@
 class DeedsController < ApplicationController
   before_action :set_deed, only: %i[ show edit update destroy ]
 
-  # GET /deeds or /deeds.json
-  def index
-    @deeds = Deed.all
-  end
-
   # GET /deeds/1 or /deeds/1.json
   def show
     @deed = Deed.find(params[:id])
@@ -50,13 +45,14 @@ class DeedsController < ApplicationController
 
   # DELETE /deeds/1 or /deeds/1.json
   def destroy
-    @deed.destroy!
-
+    @deed = Deed.find(params[:id])
+    @deed.destroy
     respond_to do |format|
-      format.html { redirect_to deeds_path, status: :see_other, notice: "Deed was successfully destroyed." }
+      format.html { redirect_to root_path, notice: "Deed was successfully deleted." }
       format.json { head :no_content }
     end
-  end
+  end  
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.

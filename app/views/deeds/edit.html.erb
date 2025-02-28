@@ -1,12 +1,8 @@
-<% content_for :title, "Editing deed" %>
+<h1 class="text-5xl font-semibold text-center text-blue-400 mb-6">New</h1>
 
-<h1>Editing deed</h1>
+  <%= render "form", deed: @deed %>
 
-<%= render "form", deed: @deed %>
-
-<br>
-
-<div>
-  <%= link_to "Show this deed", @deed %> |
-  <%= link_to "Back to deeds", deeds_path %>
-</div>
+  <div class="mt-6 text-center">
+    <%= link_to "Show this deed", @deed, class: "text-indigo-600 hover:text-indigo-800" %> |
+    <%= link_to "Back to deeds", root_path, class: "text-indigo-600 hover:text-indigo-800" %>
+  </div>
