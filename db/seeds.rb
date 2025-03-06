@@ -20,7 +20,7 @@ User.create!(email_address: "admin@gmail.com",
 
 deeds = []
 users.each do |user|
-  3.times do |i|
+  20.times do |i|
     deeds << Deed.create!(
       user: user,
       title: "Дело ##{i + 1} для #{user.email_address}",

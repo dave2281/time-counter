@@ -11,19 +11,17 @@
   </div>
 
   <br>
-
   <div class="flex flex-col items-center justify-center gap-5 mt-6 mb-6 md:flex-row">
-    <label for="showFinished" class="inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-indigo-600 dark:bg-indigo-600 dark:text-white-800 rounded-md sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-tranneutral-y-px">Show Completed Tasks</label>
-    <input type="checkbox" id="showFinished" class="focus:ring-indigo-500" />
+    <%= form_with url: root_path, method: :get, local: true do %>
+      <%= hidden_field_tag :show_finished, params[:show_finished] == 'true' ? 'false' : 'true' %>
+      <button type="submit" class="inline-block w-auto text-center min-w-[200px] px-6 py-4 text-white transition-all bg-indigo-600 dark:bg-indigo-600 dark:text-white-800 rounded-md sm:w-auto hover:bg-gray-900 hover:text-white shadow-neutral-300 dark:shadow-neutral-700 hover:shadow-2xl hover:shadow-neutral-400 hover:-translate-y-px">
+        <%= params[:show_finished] == 'true' ? 'Hide Completed Tasks' : 'Show Completed Tasks' %>
+      </button>
+    <% end %>
   </div>
 
-  <% @deeds.each do |deed| %>
-    <% if deed.finished? %>
-      <div class="h-full completed-task" style="display: none;text-decoration: line-through;">
-    <% else %>
-      <div class="h-full unfinished-task" style="display: none;">
-    <% end %>
-      
+
+  <% @records.each do |deed| %>      
       <div class="max-w-2xl mx-auto bg-indigo-600 shadow-lg rounded-lg">
         <div class="px-6 py-5">
           <div class="flex items-start">
@@ -45,7 +43,7 @@
               </div>
               <div class="flex items-end justify-between whitespace-normal">
                 <div class="max-w-md text-indigo-100">
-                  <p class="mb-2"><%= deed.description unless deed.description.nil? %></p>
+                  <p class="mb-2"><%= deed.description.truncate(15) unless deed.description.nil? %></p>
                 </div>
                 <%= link_to "->", deed, class: 'flex-shrink-0 flex items-center justify-center text-indigo-600 w-10 h-10 rounded-full bg-gradient-to-b from-indigo-50 to-indigo-100 hover:from-white hover:to-indigo-50 focus:outline-none focus-visible:from-white focus-visible:to-white transition duration-150 ml-2'%>
               </div>
@@ -58,31 +56,4 @@
   <% end %>
 </section>
 
-<script>
-  // Get checkbox element
-  const checkbox = document.getElementById('showFinished');
-  
-  // Function to toggle visibility of tasks
-  function toggleTaskVisibility() {
-    const completedTasks = document.querySelectorAll('.completed-task');
-    const unfinishedTasks = document.querySelectorAll('.unfinished-task');
-    
-    if (checkbox.checked) {
-      // Show completed tasks and hide unfinished tasks
-      completedTasks.forEach(task => task.style.display = 'block');
-      unfinishedTasks.forEach(task => task.style.display = 'none');
-    } else {
-      // Show unfinished tasks and hide completed tasks
-      unfinishedTasks.forEach(task => task.style.display = 'block');
-      completedTasks.forEach(task => task.style.display = 'none');
-    }
-  }
-
-  // Add event listener for checkbox change
-  checkbox.addEventListener('change', toggleTaskVisibility);
-
-  // Add event listener for Turbo load event
-  document.addEventListener('turbo:load', toggleTaskVisibility);
-
-</script>
-
+<%== pagy_nav(@pagy) %>

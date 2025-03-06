@@ -34,7 +34,7 @@ class DeedsController < ApplicationController
   def update
     respond_to do |format|
       if @deed.update(deed_params)
-        format.html { redirect_to @deed, notice: "Deed was successfully updated." }
+        format.html { redirect_to root_path, notice: "Deed was successfully updated." }
         format.json { render :show, status: :ok, location: @deed }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -61,6 +61,6 @@ class DeedsController < ApplicationController
     end    
 
     def deed_params
-      params.require(:deed).permit(:title, :description, :user_id)
-    end    
+      params.require(:deed).permit(:title, :description, :user_id, :finished)
+    end  
 end
