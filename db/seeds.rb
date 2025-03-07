@@ -25,6 +25,7 @@ users.each do |user|
       user: user,
       title: "Дело ##{i + 1} для #{user.email_address}",
       description: "Описание для дела ##{i + 1}",
+      color: ['red', 'orange', 'green'].sample,
       finished: [true, false].sample,
       total_time: nil
     )

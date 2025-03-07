@@ -26,6 +26,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_17_140921) do
     t.string "total_time"
     t.string "title", null: false
     t.string "description"
+    t.string "color"
     t.boolean "finished", default: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
