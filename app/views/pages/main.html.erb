@@ -23,28 +23,26 @@
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <% @records.each do |deed| %>      
-      <div class="max-w-lg <%= deed.finished? ? 'bg-red-600' : 'bg-green-600' %> shadow-lg rounded-xl p-6">
-        <div class="flex items-start">
-          <svg class="fill-current flex-shrink-0 mr-4 md:mr-6" width="35" height="35" viewBox="0 0 30 30">
-            <path class="text-indigo-300" d="m16 14.883 14-7L14.447.106a1 1 0 0 0-.895 0L0 6.883l16 8Z" />
-            <path class="text-indigo-200" d="M16 14.619v15l13.447-6.724A.998.998 0 0 0 30 22V7.619l-14 7Z" />
-            <path class="text-indigo-500" d="m16 14.619-16-8V21c0 .379.214.725.553.895L16 29.619v-15Z" />
-          </svg>
-          <div class="flex-grow">
-            <div class="flex justify-between items-center mb-3">
-              <h2 class="text-xl md:text-2xl font-extrabold text-gray-50 truncate"><%= deed.title.truncate(20) %></h2>
-              <p class="text-gray-300 text-lg"><%= deed.total_time %></p>
-            </div>
-            <p class="text-indigo-100 text-md md:text-lg mb-3"><%= deed.description.truncate(25) unless deed.description.nil? %></p>
-            <div class="text-right">
-              <%= link_to "", deed, class: "inline-block w-10 h-10 md:w-12 md:h-12 bg-red-50 rounded-full flex items-center justify-center hover:bg-gray-200 transition text-lg md:text-xl" %>
-            </div>
+  <% @records.each do |deed| %>      
+    <%= link_to deed, class: "block max-w-lg #{deed.finished? ? 'bg-red-600' : 'bg-green-600'} shadow-lg rounded-xl p-6 transition-transform transform hover:scale-105" do %>
+      <div class="flex items-start">
+        <svg class="fill-current flex-shrink-0 mr-4 md:mr-6" width="35" height="35" viewBox="0 0 30 30">
+          <path class="text-indigo-300" d="m16 14.883 14-7L14.447.106a1 1 0 0 0-.895 0L0 6.883l16 8Z" />
+          <path class="text-indigo-200" d="M16 14.619v15l13.447-6.724A.998.998 0 0 0 30 22V7.619l-14 7Z" />
+          <path class="text-indigo-500" d="m16 14.619-16-8V21c0 .379.214.725.553.895L16 29.619v-15Z" />
+        </svg>
+        <div class="flex-grow">
+          <div class="flex justify-between items-center mb-3">
+            <h2 class="text-xl md:text-2xl font-extrabold text-gray-50 truncate"><%= deed.title.truncate(20) %></h2>
+            <p class="text-gray-300 text-lg"><%= deed.total_time %></p>
           </div>
+          <p class="text-indigo-100 text-md md:text-lg mb-3"><%= deed.description.truncate(25) unless deed.description.nil? %></p>
         </div>
       </div>
     <% end %>
-  </div>
+  <% end %>
+</div>
+
 </section>
 
 <%== pagy_nav(@pagy) %>

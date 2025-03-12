@@ -1,14 +1,17 @@
 <div class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4">
   <div class="bg-gray-800 shadow-lg rounded-2xl p-6 w-full max-w-md">
     <h1 class="text-2xl font-bold text-center text-blue-400"><%= @deed.title %></h1>
-    <p class="text-gray-300 mt-2 text-center"><%= @deed.description %></p>
     
+    <p class="text-gray-300 mt-2 text-center break-words" style="word-wrap: break-word; white-space: normal; overflow-wrap: break-word;">
+      <%= @deed.description %>
+    </p>
+
     <div class="mt-4 text-center">
       <p id="total-time" class="text-lg font-semibold text-yellow-300">Total time: <%= @deed.total_time %></p>
       <p id="today-time" class="text-lg font-semibold text-green-300">Today: <%= @deed.today %></p>
       <p id="timer-display" class="text-lg font-semibold text-blue-300 mt-2">00:00:00</p>
     </div>
-        
+    
     <div class="flex items-center justify-center mt-6">
       <div id="timer-indicator" class="w-6 h-6 rounded-full bg-red-500 transition-colors"></div>
     </div>
@@ -22,7 +25,7 @@
         <%= form.submit "Update Status", class: "mt-2 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-all" %>
       <% end %>
     </div>
-    
+
     <turbo-frame id="deed-timer-frame">
       <button id="toggle-timer" data-deed-id="<%= @deed.id %>" 
         class="mt-6 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition-all">
@@ -42,72 +45,72 @@
       <%= link_to "Back to deeds", root_path, class: "white-600 hover:text-gray-300" %>
     </div>
   </div>
-  
+
   <script>
-  document.addEventListener("turbo:load", function() {
-    const indicator = document.getElementById("timer-indicator");
-    const button = document.getElementById("toggle-timer");
-    const timerDisplay = document.getElementById("timer-display");
-    const deedId = button.getAttribute("data-deed-id");
+    document.addEventListener("turbo:load", function() {
+      const indicator = document.getElementById("timer-indicator");
+      const button = document.getElementById("toggle-timer");
+      const timerDisplay = document.getElementById("timer-display");
+      const deedId = button.getAttribute("data-deed-id");
 
-    let timerRunning = false;
-    let elapsedTime = 0;
-    let timerInterval;
+      let timerRunning = false;
+      let elapsedTime = 0;
+      let timerInterval;
 
-    function formatTime(seconds) {
-      const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
-      const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
-      const secs = String(seconds % 60).padStart(2, "0");
-      return `${hrs}:${mins}:${secs}`;
-    }
-
-    function startTimer() {
-      timerInterval = setInterval(() => {
-        elapsedTime++;
-        timerDisplay.textContent = formatTime(elapsedTime);
-      }, 1000);
-    }
-
-    function stopTimer() {
-      clearInterval(timerInterval);
-    }
-
-    function updateIndicator(running) {
-      indicator.classList.toggle("bg-green-500", running);
-      indicator.classList.toggle("bg-red-500", !running);
-      timerRunning = running;
-
-      if (running) {
-        startTimer();
-      } else {
-        stopTimer();
+      function formatTime(seconds) {
+        const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
+        const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+        const secs = String(seconds % 60).padStart(2, "0");
+        return `${hrs}:${mins}:${secs}`;
       }
-    }
 
-    // Получение текущего состояния таймера с сервера
-    fetch(`/daily_logs/timer_status?deed_id=${deedId}`)
-      .then(response => response.json())
-      .then(data => {
-        elapsedTime = data.elapsed_time || 0; // Получаем уже прошедшее время
-        timerDisplay.textContent = formatTime(elapsedTime);
-        updateIndicator(data.running);
-      })
-      .catch(error => console.error("Ошибка при получении статуса таймера:", error));
+      function startTimer() {
+        timerInterval = setInterval(() => {
+          elapsedTime++;
+          timerDisplay.textContent = formatTime(elapsedTime);
+        }, 1000);
+      }
 
-    // Обработчик клика по кнопке старта/остановки
-    button.addEventListener("click", function() {
-      fetch("/daily_logs/toggle_timer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-        },
-        body: JSON.stringify({ deed_id: deedId })
-      })
-      .then(response => response.json())
-      .then(data => updateIndicator(data.running))
-      .catch(error => console.error("Ошибка:", error));
+      function stopTimer() {
+        clearInterval(timerInterval);
+      }
+
+      function updateIndicator(running) {
+        indicator.classList.toggle("bg-green-500", running);
+        indicator.classList.toggle("bg-red-500", !running);
+        timerRunning = running;
+
+        if (running) {
+          startTimer();
+        } else {
+          stopTimer();
+        }
+      }
+
+ 
+      fetch(`/daily_logs/timer_status?deed_id=${deedId}`)
+        .then(response => response.json())
+        .then(data => {
+          elapsedTime = data.elapsed_time || 0; 
+          timerDisplay.textContent = formatTime(elapsedTime);
+          updateIndicator(data.running);
+        })
+        .catch(error => console.error("Ошибка при получении статуса таймера:", error));
+
+
+      button.addEventListener("click", function() {
+        fetch("/daily_logs/toggle_timer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+          },
+          body: JSON.stringify({ deed_id: deedId })
+        })
+        .then(response => response.json())
+        .then(data => updateIndicator(data.running))
+        .catch(error => console.error("Ошибка:", error));
+      });
     });
-  });
   </script>
 </div>
