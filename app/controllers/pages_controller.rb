@@ -8,4 +8,8 @@ class PagesController < ApplicationController
     
     @pagy, @records = pagy(@deeds, items: 5)
   end
+
+  def calendar
+    @deeds = Deed.where(user_id: Current.user.id)
+  end
 end

@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
+  get 'signup', to: 'users#new'
+  post 'signup', to: 'users#create'
   root "pages#main"
   get "calendar", to: "pages#calendar", as: :calendar
   resources :deeds
+  resources :users
   post "daily_logs/toggle_timer", to: "daily_logs#toggle_timer"
   get 'daily_logs/timer_status', to: 'daily_logs#timer_status'
 
