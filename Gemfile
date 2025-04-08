@@ -51,6 +51,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  gem 'factory_bot_rails'
+  gem 'shoulda-matchers'
+  gem 'faker'
 end
 
 group :development do
@@ -64,10 +67,9 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem 'faker'
-
 gem "tailwindcss-ruby", "~> 4.0"
-
 gem "tailwindcss-rails", "~> 4.0"
-
 gem 'pagy'
+gem 'rspec'
+gem 'rspec-rails'
+

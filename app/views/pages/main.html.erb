@@ -3,27 +3,44 @@
   <br>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-6 mb-6">
-    <%= button_to "Выйти", session_path, method: :delete, data: { confirm: "Вы уверены, что хотите выйти?" }, 
+    <%= button_to "Выйти", session_path, method: :delete, data: { confirm: "Вы уверены, что хотите выйти?" },
       class: "w-full md:w-auto text-lg text-center px-6 py-4 text-white transition-all bg-red-600 rounded-lg hover:bg-gray-900 hover:text-white shadow-lg" %>
 
-    <%= link_to "New deed", new_deed_path, 
+    <%= link_to "New deed", new_deed_path,
       class: "w-full md:w-auto text-lg text-center px-6 py-4 text-white transition-all bg-indigo-600 rounded-lg hover:bg-gray-900 hover:text-white shadow-lg" %>
 
-    <%= link_to "Calendar", calendar_path, 
+    <%# link_to "Calendar", calendar_path,
       class: "w-full md:w-auto text-lg text-center px-6 py-4 text-white transition-all bg-indigo-600 rounded-lg hover:bg-gray-900 hover:text-white shadow-lg" %>
   </div>
 
-  <div class="flex justify-center mt-6 mb-6">
-    <%= form_with url: root_path, method: :get, local: true do %>
+  <div class="flex justify-center mt-6 mb-6 space-x-4">
+    <%= form_with url: root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks)), method: :get, local: true do %>
+      <%= hidden_field_tag :show_just_created, params[:show_just_created] == 'true' ? 'false' : 'true' %>
+      <button type="submit" class="w-48 px-6 py-4 text-white transition-all bg-indigo-600 rounded-lg hover:bg-gray-900 shadow-lg">
+        <%= params[:show_just_created] == 'true' ? 'Hide just created Tasks' : 'Show just created Tasks' %>
+      </button>
+    <% end %>
+
+    <%= form_with url: root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks)), method: :get, local: true do %>
       <%= hidden_field_tag :show_finished, params[:show_finished] == 'true' ? 'false' : 'true' %>
-      <button type="submit" class="w-full md:w-80 text-lg text-center px-6 py-4 text-white transition-all bg-indigo-600 rounded-lg hover:bg-gray-900 hover:text-white shadow-lg">
+      <button type="submit" class="w-48 px-6 py-4 text-white transition-all bg-indigo-600 rounded-lg hover:bg-gray-900 shadow-lg">
         <%= params[:show_finished] == 'true' ? 'Hide Completed Tasks' : 'Show Completed Tasks' %>
+      </button>
+    <% end %>
+
+    <%= form_with url: root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks)), method: :get, local: true do %>
+      <%= hidden_field_tag :show_all_tasks, params[:show_all_tasks] == 'true' ? 'false' : 'true' %>
+      <button type="submit" class="w-48 px-6 py-4 text-white transition-all bg-indigo-600 rounded-lg hover:bg-gray-900 shadow-lg">
+        <%= params[:show_all_tasks] == 'true' ? 'Hide All The Tasks' : 'Show All The Tasks' %>
       </button>
     <% end %>
   </div>
 
+
+
+
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  <% @records.each do |deed| %>      
+  <% @records.each do |deed| %>
     <%= link_to deed, class: "block max-w-lg #{deed.finished? ? 'bg-red-600' : 'bg-green-600'} shadow-lg rounded-xl p-6 transition-transform transform hover:scale-105" do %>
       <div class="flex items-start">
         <svg class="fill-current flex-shrink-0 mr-4 md:mr-6" width="35" height="35" viewBox="0 0 30 30">
@@ -34,7 +51,7 @@
         <div class="flex-grow">
           <div class="flex justify-between items-center mb-3">
             <h2 class="text-xl md:text-2xl font-extrabold text-gray-50 truncate"><%= deed.title.truncate(20) %></h2>
-            <p class="text-gray-300 text-lg"><%= deed.total_time %></p>
+            <p class="text-gray-300 text-lg"><%= deed.total_time.presence || "N/A" %></p>
           </div>
           <p class="text-indigo-100 text-md md:text-lg mb-3"><%= deed.description.truncate(25) unless deed.description.nil? %></p>
         </div>

@@ -92,8 +92,10 @@
                 <div class="flex flex-col h-40 mx-auto xl:w-40 lg:w-30 md:w-30 sm:w-full w-10 mx-auto overflow-hidden">
                   <div class="top h-5 w-full">
                     <span class="text-black-500"><%=day%></span>
-                    <%@deeds.each do |deed|%>
-                      <%= button_to "#{deed.title if Time.now.strftime("%Y-%m-%d") == deed.updated_at.strftime("%Y-%m-%d")}", deed_path(deed), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full' %>
+                    <% @deeds.each do |deed| %>
+                      <% if Time.now.strftime("%Y-%m-%d") == deed.updated_at.strftime("%Y-%m-%d") %>
+                        <%= button_to "#{deed.title}", deed_path(deed), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full' %>
+                      <%end%>
                     <%end%>
                   </div>
                   <div class="bottom flex-grow h-30 py-1 w-full cursor-pointer"></div>
@@ -104,11 +106,11 @@
                 <div class="flex flex-col h-40 mx-auto xl:w-40 lg:w-30 md:w-30 sm:w-full w-10 mx-auto overflow-hidden">
                   <div class="top h-5 w-full">
                     <span class="text-gray-500"><%=day%></span>
-                    <%@deeds.each do |deed|%>
-                      <% if Time.now.strftime("%Y-%m-#{day}") == deed.updated_at.strftime("%Y-%m-%d") %>
-                        <%= button_to "#{deed.title if Time.now.strftime("%Y-%m-#{day}") == deed.updated_at.strftime("%Y-%m-%d")}", deed_path(deed), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full' %>
-                      <%end%>
-                    <%end%>
+                    <% @deeds.each do |deed| %>
+                      <% if deed.updated_at.strftime("%Y-%m-%d") == Time.now.strftime("%Y-%m-#{day}") %>
+                        <%= button_to deed.title, deed_path(deed), class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-1' %>
+                      <% end %>
+                    <% end %>
                   </div>
                   <div class="bottom flex-grow h-30 py-1 w-full cursor-pointer"></div>
                 </div>
