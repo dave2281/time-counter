@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "confirmations/show"
   get 'signup', to: 'users#new'
   post 'signup', to: 'users#create'
   root "pages#main"
@@ -7,6 +8,8 @@ Rails.application.routes.draw do
   resources :users
   post "daily_logs/toggle_timer", to: "daily_logs#toggle_timer"
   get 'daily_logs/timer_status', to: 'daily_logs#timer_status'
+
+  get '/confirmation', to: 'confirmations#show', as: :confirmation
 
   resource :session
   resources :passwords, param: :token

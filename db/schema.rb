@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_17_140921) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_22_062348) do
   create_table "daily_logs", force: :cascade do |t|
     t.datetime "start_time"
     t.datetime "end_time"
@@ -48,6 +48,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_17_140921) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "confirmation_token"
+    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

@@ -7,11 +7,12 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+
     if @user.save
-      session[:user_id] = @user.id
-      redirect_to root_path, notice: "Welcome! You have successfully signed up."
+      UserMailer.with(user: @user).confirmation_email.deliver_later
+      redirect_to root_path, notice: "Проверьте вашу почту для подтверждения."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 

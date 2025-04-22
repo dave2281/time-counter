@@ -6,11 +6,18 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if (user = User.authenticate_by(params.permit(:email_address, :password)))
+    user = User.authenticate_by(params.permit(:email_address, :password))
+
+    if user
+      unless user.confirmed?
+        redirect_to sign_in_path, alert: "Подтвердите email, прежде чем войти."
+        return
+      end
+
       start_new_session_for user
       redirect_to after_authentication_url
     else
-      redirect_to new_session_path, alert: "Try another email address or password."
+      redirect_to new_session_path, alert: "Неверный email или пароль."
     end
   end
 
