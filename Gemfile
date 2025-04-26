@@ -72,4 +72,5 @@ gem "tailwindcss-rails", "~> 4.0"
 gem 'pagy'
 gem 'rspec'
 gem 'rspec-rails'
+gem 'mailgun-ruby'
 
