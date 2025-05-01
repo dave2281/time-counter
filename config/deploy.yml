@@ -2,12 +2,12 @@
 service: time_tracker2
 
 # Name of the container image.
-image: root/time_tracker2
+image: dave2281/time_tracker2
 
 # Deploy to these servers.
 servers:
   web:
-    - 85.9.205.34
+    - 85.9.207.230
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -19,7 +19,7 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
   ssl: true
-  host: app.example.com
+  host: timetracker.rubydevelopers.com
 
 # Credentials for your image host.
 registry:
