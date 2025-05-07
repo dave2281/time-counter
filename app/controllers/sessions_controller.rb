@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
 
     if user
       unless user.confirmed?
-        redirect_to sign_in_path, alert: "Подтвердите email, прежде чем войти."
+        redirect_to new_session_path, alert: "Approve email, before sign in."
         return
       end
 

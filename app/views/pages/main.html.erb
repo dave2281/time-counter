@@ -37,8 +37,6 @@
   </div>
 
 
-
-
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   <% @records.each do |deed| %>
     <%= link_to deed, class: "block max-w-lg #{deed.finished? ? 'bg-red-600' : 'bg-green-600'} shadow-lg rounded-xl p-6 transition-transform transform hover:scale-105" do %>
