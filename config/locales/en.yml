@@ -1,0 +1,92 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# Be aware that YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     en:
+#       "yes": yup
+#       enabled: "ON"
+
+en:
+  deeds:
+    index:
+      title: "Task List"
+    show:
+      total_time: "Total Time"
+      today: "Today"
+      mark_as_finished: "Mark as Finished"
+      update_status: "Update Status"
+      toggle_timer: "Start/Stop Timer"
+    form:
+      title: "Title"
+      description: "Description"
+      save: "Save"
+    edit:
+      edit_text: "Edit"
+    new:
+      new: "New Task"
+    common:
+      show_deed: 'Show Task'
+      back_to_deeds: 'Back to All Tasks'
+  main:
+    button_to_quit: "Log Out"
+    new_deed: "New Task"
+    hide_just_created_task: "Hide Just Created Task"
+    show_just_created_task: "Show Just Created Task"
+    hide_completed_tasks: "Hide Completed Tasks"
+    show_completed_tasks: "Show Completed Tasks"
+    hide_all_tasks: "Hide All Tasks"
+    show_all_tasks: "Show All Tasks"
+  calendar:
+  passwords:
+    edit:
+      update_your_password: 'Change Password'
+      enter_your_password: 'Enter Your Password'
+      repeat_new_password: 'Repeat Your Password'
+      save: 'Save'
+    new:
+      enter_email: 'Enter Your Email'
+      email_reset_insturctions: 'Send Password Reset Instructions'
+  passwords_mailer:
+    reset:
+      reset_password_time_limit: 'You have 15 minutes to change your password'
+      password_reset_page: 'Go to Password Reset Page'
+  sessions:
+    new:
+      enter_email: 'Enter Your Email'
+      enter_password: 'Enter Your Password'
+      sign_in: 'Sign In'
+      forgot_password: 'Forgot Password?'
+      sign_up: 'Sign Up'
+  user_mailer:
+    confirmation_email:
+      confirm_title: 'Confirm Your Registration'
+      thanks_signing_up: 'Thank you for signing up! Please confirm your email address by clicking the button below:'
+      fake_sign_up: 'If you did not sign up, you can safely ignore this message.'
+  users:
+    new:
+      sign_up: 'Sign Up'
+      enter_email: 'Enter Your Email'
+      enter_password: 'Enter Your Password'
+      have_account: 'Already have an account? Sign In.'
+

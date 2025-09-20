@@ -1,0 +1,244 @@
+<% content_for :title, @deed.title %>
+
+<div class="min-h-screen">
+  <section class="text-white py-12 px-6">
+    <div class="text-center mb-12">
+      <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text mb-6 float-animation">
+        🌟 <%= @deed.title.upcase %> 🌟
+      </h1>
+      <p class="text-xl text-gray-300 font-light max-w-2xl mx-auto">
+        <%= @deed.description.present? ? @deed.description : "Cosmic mission in progress..." %>
+      </p>
+    </div>
+  </section>
+
+  <div class="sticky top-0 z-50 bg-black/80 backdrop-blur-lg mx-4">
+    <div class="container mx-auto px-6 py-6">
+      <div class="flex flex-wrap justify-center gap-4">
+        <%= link_to "✏️ Edit Mission", edit_deed_path(@deed),
+          class: "px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-yellow-600 to-orange-700 rounded-2xl border border-yellow-500/30 transition-all duration-300 hover:scale-105 text-center shadow-lg hover:shadow-yellow-500/25" %>
+        
+        <%= button_to "💥 Destroy", deed_path(@deed), method: :delete,
+          data: { confirm: "Are you sure you want to destroy this cosmic deed?" },
+          class: "px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-red-700 to-red-800 rounded-2xl border border-red-500/30 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-red-500/25" %>
+        
+        <%= link_to "🌌 Back to Galaxy", root_path,
+          class: "px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-700 rounded-2xl border border-indigo-500/30 transition-all duration-300 hover:scale-105 text-center shadow-lg hover:shadow-indigo-500/25" %>
+      </div>
+    </div>
+  </div>
+
+  <section class="container mx-auto px-6 py-12 text-white relative z-20">
+    <div class="mt-8 mb-12">
+      <div class="max-w-4xl mx-auto">        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+          <div class="bg-gradient-to-r from-blue-900/50 to-cyan-900/50 rounded-3xl p-8 backdrop-blur-xl">
+            <div class="text-center">
+              <div class="text-4xl mb-4">🌍</div>
+              <p class="text-cyan-300 text-sm font-medium uppercase tracking-wider mb-3">Total Time</p>
+              <p id="total-time" class="text-3xl font-bold text-white"><%= @deed.total_time %></p>
+            </div>
+          </div>
+          
+          <div class="bg-gradient-to-r from-green-900/50 to-emerald-900/50 rounded-3xl p-8 backdrop-blur-xl">
+            <div class="text-center">
+              <div class="text-4xl mb-4">🚀</div>
+              <p class="text-green-300 text-sm font-medium uppercase tracking-wider mb-3">Today</p>
+              <p id="today-time" class="text-3xl font-bold text-white"><%= @deed.today %></p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-gradient-to-r from-purple-900/50 to-pink-900/50 rounded-3xl p-10 backdrop-blur-xl mb-10">
+          <div class="text-center">
+            <div class="flex items-center justify-center mb-6">
+              <div id="timer-indicator" class="w-5 h-5 rounded-full bg-red-500 mr-4 transition-all duration-300"></div>
+              <span class="text-purple-300 text-sm font-medium uppercase tracking-wider">Active Session</span>
+            </div>
+            <p id="timer-display" class="text-5xl font-mono font-bold text-white rounded-xl glow-effect mb-8">00:00:00</p>
+            
+            <turbo-frame id="deed-timer-frame">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                <button id="start-timer" data-deed-id="<%= @deed.id %>" 
+                  class="group relative overflow-hidden bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-500 hover:to-emerald-600 text-white font-bold py-5 px-8 rounded-2xl transition-all duration-300 hover:scale-105 border border-green-500/30 shadow-lg hover:shadow-green-500/25 text-lg">
+                  <span class="relative z-10">🚀 Launch Mission</span>
+                </button>
+                <button id="stop-timer" data-deed-id="<%= @deed.id %>" 
+                  class="group relative overflow-hidden bg-gradient-to-r from-red-600 to-pink-700 hover:from-red-500 hover:to-pink-600 text-white font-bold py-5 px-8 rounded-2xl transition-all duration-300 hover:scale-105 border border-red-500/30 shadow-lg hover:shadow-red-500/25 text-lg">
+                  <span class="relative z-10">⛔ Land Mission</span>
+                </button>
+              </div>
+            </turbo-frame>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-gray-900/50 to-slate-900/50 rounded-3xl p-8 backdrop-blur-xl">
+          <%= form_with(model: @deed, url: deed_path(@deed), method: :patch, local: true) do |form| %>
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6">
+              <div class="flex items-center">
+                <%= form.check_box :finished, class: "w-6 h-6 text-purple-600 bg-gray-700 border-gray-600 rounded-lg focus:ring-purple-500" %>
+                <%= form.label :finished, t("deeds.show.mark_as_finished"), class: "ml-3 text-gray-300 font-medium text-lg" %>
+              </div>
+              <%= form.submit t("deeds.show.update_status"), 
+                  class: "bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-600 text-white font-bold py-3 px-8 rounded-2xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-purple-500/25" %>
+            </div>
+          <% end %>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  .float-animation {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+  }
+  
+  .glow-effect {
+    text-shadow: 
+      0 0 20px rgba(147, 51, 234, 0.8),
+      0 0 40px rgba(147, 51, 234, 0.6),
+      0 0 60px rgba(147, 51, 234, 0.4),
+      0 0 80px rgba(147, 51, 234, 0.2);
+  }
+</style>
+
+<script>
+    document.addEventListener("turbo:load", () => {
+        const timerDisplay = document.getElementById("timer-display");
+        const indicator = document.getElementById("timer-indicator");
+        const startButton = document.getElementById("start-timer");
+        const stopButton = document.getElementById("stop-timer");
+
+        if (!startButton || !stopButton || !timerDisplay || !indicator) return;
+
+        const deedId = startButton.getAttribute("data-deed-id");
+
+        let timerInterval = null;
+        let startTime = null;
+        let baseTime = 0;
+        let isRunning = false;
+
+        function formatTime(seconds) {
+            const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
+            const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
+            const secs = String(seconds % 60).padStart(2, "0");
+            return `${hrs}:${mins}:${secs}`;
+        }
+
+        function updateDisplay() {
+            if (isRunning && startTime) {
+                const currentTime = Math.floor((Date.now() - startTime) / 1000);
+                const totalTime = baseTime + currentTime;
+                timerDisplay.textContent = formatTime(totalTime);
+            } else {
+                timerDisplay.textContent = formatTime(baseTime);
+            }
+        }
+
+        function startTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            
+            timerInterval = setInterval(updateDisplay, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function updateUI(running, serverStartTime, elapsedTime) {
+            isRunning = running;
+            
+            if (running && serverStartTime) {
+                // Таймер запущен - космический режим активен
+                startTime = Date.now() - (elapsedTime * 1000);
+                baseTime = 0;
+                indicator.classList.remove("bg-red-500");
+                indicator.classList.add("bg-green-500", "animate-pulse");
+                startButton.disabled = true;
+                stopButton.disabled = false;
+                startButton.classList.add("opacity-50");
+                stopButton.classList.remove("opacity-50");
+                startTimer();
+            } else {
+                // Таймер остановлен - режим ожидания
+                startTime = null;
+                baseTime = elapsedTime || 0;
+                indicator.classList.remove("bg-green-500", "animate-pulse");
+                indicator.classList.add("bg-red-500");
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                startButton.classList.remove("opacity-50");
+                stopButton.classList.add("opacity-50");
+                stopTimer();
+            }
+            
+            updateDisplay();
+        }
+
+        // Инициализация состояния таймера
+        function initTimer() {
+            fetch(`/daily_logs/timer_status?deed_id=${deedId}`)
+              .then(res => res.json())
+              .then(data => {
+                  updateUI(data.running, data.start_time, data.elapsed_time || 0);
+              })
+              .catch(error => console.error("🚨 Cosmic error during timer initialization:", error));
+        }
+
+        // Обработка кнопки "Launch"
+        startButton.addEventListener("click", () => {
+            fetch("/daily_logs/start_timer", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                },
+                body: JSON.stringify({ deed_id: deedId })
+            })
+              .then(res => res.json())
+              .then(data => {
+                  updateUI(true, data.start_time, 0);
+              })
+              .catch(error => console.error("🚨 Cosmic error during launch:", error));
+        });
+
+        // Обработка кнопки "Land"
+        stopButton.addEventListener("click", () => {
+            fetch("/daily_logs/stop_timer", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                },
+                body: JSON.stringify({ deed_id: deedId })
+            })
+              .then(res => res.json())
+              .then(data => {
+                  updateUI(false, null, data.elapsed_time);
+                  // Обновляем отображение времени за день
+                  document.getElementById("today-time").textContent = data.today_formatted;
+              })
+              .catch(error => console.error("🚨 Cosmic error during landing:", error));
+        });
+
+        // Инициализация при загрузке страницы
+        initTimer();
+
+        // Обновляем каждые 30 секунд для синхронизации с сервером
+        setInterval(initTimer, 30000);
+    });
+</script>
+</div>

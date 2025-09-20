@@ -1,0 +1,344 @@
+<div class="min-h-screen">
+  <section class="text-white py-8">
+    <div class="text-center mb-8">
+      <h1 class="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 bg-clip-text mb-4 float-animation">
+        ✨ COSMIC DEEDS ✨
+      </h1>
+      <p class="text-xl text-gray-300 font-light">Track your time across the universe</p>
+    </div>
+  </section>
+
+  <div class="sticky top-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/10">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex justify-center gap-4 mb-4">
+        <%= button_to "🚀 Exit Portal", session_path, method: :delete,
+          class: "px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-red-600 to-red-700 rounded-xl border border-red-500/30 transition-all duration-300 hover:scale-105" %>
+
+        <%= link_to "⭐ Create New Deed", new_deed_path,
+          class: "px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl border border-purple-500/30 transition-all duration-300 hover:scale-105 text-center" %>
+      </div>
+
+      <div class="filter-buttons-compact">
+        <%= form_with url: root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers)), method: :get, local: true do %>
+          <%= hidden_field_tag :show_just_created, params[:show_just_created] == 'true' ? 'false' : 'true' %>
+          <button type="submit" class="cosmic-filter-btn filter-button-compact">
+            🌟 <%= params[:show_just_created] == 'true' ? 'Hide New' : 'Show New' %>
+          </button>
+        <% end %>
+
+        <%= form_with url: root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers)), method: :get, local: true do %>
+          <%= hidden_field_tag :show_finished, params[:show_finished] == 'true' ? 'false' : 'true' %>
+          <button type="submit" class="cosmic-filter-btn filter-button-compact">
+            💫 <%= params[:show_finished] == 'true' ? 'Hide Done' : 'Show Done' %>
+          </button>
+        <% end %>
+        
+        <%= form_with url: root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers)), method: :get, local: true do %>
+          <%= hidden_field_tag :show_running_timers, params[:show_running_timers] == 'true' ? 'false' : 'true' %>
+          <button type="submit" class="cosmic-filter-active filter-button-compact">
+            ⚡ <%= params[:show_running_timers] == 'true' ? 'Hide Active' : 'Show Active' %>
+          </button>
+        <% end %>
+
+        <%= form_with url: root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers)), method: :get, local: true do %>
+          <%= hidden_field_tag :show_all_tasks, params[:show_all_tasks] == 'true' ? 'false' : 'true' %>
+          <button type="submit" class="cosmic-filter-btn filter-button-compact">
+            🌌 <%= params[:show_all_tasks] == 'true' ? 'Hide All' : 'Show All' %>
+          </button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <section class="container mx-auto px-4 py-8 text-white relative z-20">
+  <div style="margin-top: 4rem; margin-bottom: 5rem;">
+    <div class="cards-grid">
+      <% @records.each do |deed| %>
+        <% 
+          card_class = if deed.timer_running?
+                         'cosmic-card-active'
+                       elsif deed.finished?
+                         'cosmic-card-completed'
+                       else
+                         'cosmic-card-default'
+                       end
+        %>
+        <%= link_to deed, class: "#{card_class} group block relative overflow-hidden rounded-3xl p-6 transition-all duration-500 hover:scale-105 hover:rotate-1 shadow-xl", style: "text-decoration: none;" do %>
+        
+        <% if deed.timer_running? %>
+          <div class="absolute inset-0 bg-gradient-to-r from-emerald-400/20 to-cyan-400/20 rounded-3xl animate-pulse"></div>
+        <% end %>
+        
+        <div class="relative z-10 flex flex-col h-full">
+          <div class="flex justify-between items-center mb-4">
+            <div class="flex items-center space-x-2">
+              <% if deed.timer_running? %>
+                <div class="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
+                <span class="text-emerald-300 text-xs font-bold uppercase tracking-wider">⚡ Active</span>
+              <% elsif deed.finished? %>
+                <div class="w-3 h-3 bg-red-400 rounded-full"></div>
+                <span class="text-red-300 text-xs font-bold uppercase tracking-wider">✅ Done</span>
+              <% else %>
+                <div class="w-3 h-3 bg-blue-400 rounded-full"></div>
+                <span class="text-blue-300 text-xs font-bold uppercase tracking-wider">🌟 Ready</span>
+              <% end %>
+            </div>
+            <span class="text-cyan-300 text-xs font-mono bg-black/30 px-2 py-1 rounded-full">
+              <%= deed.total_time.presence || "00:00:00" %>
+            </span>
+          </div>
+          
+          <div class="flex items-start space-x-3 mb-4">
+            <div class="flex-shrink-0">
+              <% if deed.timer_running? %>
+                <div class="w-10 h-10 bg-gradient-to-r from-emerald-400 to-cyan-500 rounded-xl flex items-center justify-center animate-pulse">
+                  <span class="text-lg">⚡</span>
+                </div>
+              <% elsif deed.finished? %>
+                <div class="w-10 h-10 bg-gradient-to-r from-red-400 to-pink-500 rounded-xl flex items-center justify-center">
+                  <span class="text-lg">✅</span>
+                </div>
+              <% else %>
+                <div class="w-10 h-10 bg-gradient-to-r from-purple-400 to-blue-500 rounded-xl flex items-center justify-center">
+                  <span class="text-lg">🌟</span>
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="flex-grow min-w-0">
+              <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors duration-300 leading-tight">
+                <%= deed.title %>
+              </h3>
+            </div>
+          </div>
+          
+          <p class="text-gray-400 text-sm leading-relaxed flex-grow mb-4 line-clamp-3">
+            <%= deed.description.presence || "No description provided for this cosmic quest..." %>
+          </p>
+          
+          <div class="flex justify-between items-center text-xs mt-auto pt-3 border-t border-white/10">
+            <span class="text-purple-300">Today: <%= deed.today %></span>
+            <span class="text-cyan-400 group-hover:translate-x-1 transition-transform duration-300">→</span>
+          </div>
+        </div>
+        
+        <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-cyan-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+      <% end %>
+    <% end %>
+    </div>
+  </div>
+
+  <% if @pagy.pages > 1 %>
+    <div class="flex justify-center mt-12 mb-8">
+      <div class="cosmic-pagination">
+        <%== pagy_nav(@pagy) if respond_to?(:pagy_nav) %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @records.empty? %>
+    <div class="text-center py-20">
+      <div class="text-8xl mb-6">🌌</div>
+      <h3 class="text-2xl font-bold text-purple-300 mb-4">The cosmos awaits your deeds</h3>
+      <p class="text-gray-400 text-lg">Create your first cosmic quest to begin tracking time across the universe</p>
+      <%= link_to "🚀 Start Your Journey", new_deed_path, 
+          class: "inline-block mt-6 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-2xl hover:scale-105 transition-all duration-300" %>
+    </div>
+  <% end %>
+  </section>
+</div>
+
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .cosmic-filter-btn {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.7) 0%, rgba(29, 78, 216, 0.9) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    box-shadow: 
+      0 4px 15px 0 rgba(59, 130, 246, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .cosmic-filter-btn:hover {
+    background: linear-gradient(135deg, rgba(79, 172, 254, 0.9) 0%, rgba(37, 99, 235, 1) 100%);
+    box-shadow: 
+      0 6px 25px 0 rgba(59, 130, 246, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  
+  .cosmic-filter-active {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.7) 0%, rgba(5, 150, 105, 0.9) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    box-shadow: 
+      0 4px 15px 0 rgba(16, 185, 129, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .cosmic-filter-active:hover {
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.9) 0%, rgba(16, 185, 129, 1) 100%);
+    box-shadow: 
+      0 6px 25px 0 rgba(16, 185, 129, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  
+  .cosmic-card-default {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    backdrop-filter: blur(15px);
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(148, 163, 184, 0.1),
+      inset 0 1px 0 rgba(148, 163, 184, 0.1);
+  }
+  
+  .cosmic-card-active {
+    background: linear-gradient(135deg, rgba(5, 46, 22, 0.9) 0%, rgba(6, 78, 59, 0.95) 100%);
+    border: 2px solid rgba(52, 211, 153, 0.6);
+    backdrop-filter: blur(15px);
+    box-shadow: 
+      0 10px 40px rgba(52, 211, 153, 0.3),
+      0 0 30px rgba(52, 211, 153, 0.2),
+      inset 0 1px 0 rgba(148, 163, 184, 0.1);
+  }
+  
+  .cosmic-card-completed {
+    background: linear-gradient(135deg, rgba(69, 10, 10, 0.9) 0%, rgba(127, 29, 29, 0.95) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    backdrop-filter: blur(15px);
+    box-shadow: 
+      0 10px 40px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(148, 163, 184, 0.1);
+    opacity: 0.8;
+  }
+  
+  .cosmic-card-default:hover,
+  .cosmic-card-active:hover,
+  .cosmic-card-completed:hover {
+    box-shadow: 
+      0 20px 60px rgba(0, 0, 0, 0.5),
+      0 0 40px rgba(139, 92, 246, 0.3),
+      inset 0 1px 0 rgba(148, 163, 184, 0.2);
+  }
+  
+  /* Адаптивная сетка для карточек */
+  .cards-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .cards-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .cards-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+  
+  .filter-button {
+    margin: 0.75rem 1rem;
+    padding: 1rem 2rem;
+    font-size: 0.875rem;
+    font-weight: bold;
+    color: white;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    transform: none;
+  }
+  
+  .filter-button:hover {
+    transform: scale(1.1) rotate(1deg);
+  }
+  
+  .cosmic-pagination nav {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .cosmic-pagination a,
+  .cosmic-pagination span {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    color: white;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.7) 0%, rgba(29, 78, 216, 0.9) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: 0.75rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  
+  .cosmic-pagination a:hover {
+    background: linear-gradient(135deg, rgba(79, 172, 254, 0.9) 0%, rgba(37, 99, 235, 1) 100%);
+    transform: scale(1.05);
+  }
+  
+  .cosmic-pagination .current {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.8) 0%, rgba(5, 150, 105, 1) 100%) !important;
+    border-color: rgba(16, 185, 129, 0.6);
+  }
+  
+  .filter-buttons-compact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .filter-button-compact {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .filter-button-compact:hover {
+    transform: scale(1.05);
+  }
+  
+  body {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+  
+  .cosmic-bg {
+    min-height: 100vh;
+    height: auto !important;
+  }
+</style>
+
+

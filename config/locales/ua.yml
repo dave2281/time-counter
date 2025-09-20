@@ -1,0 +1,62 @@
+ua:
+  deeds:
+    index:
+      title: "Список завдань"
+    show:
+      total_time: "Загальний час"
+      today: "Сьогодні"
+      mark_as_finished: "Виконано"
+      update_status: "Оновити статус"
+      toggle_timer: "Ввімкнути/вимкнути"
+    form:
+      title: "Назва"
+      description: "Опис"
+      save: "Зберегти"
+    edit:
+      edit_text: "Редагування"
+    new:
+      new: "Нове завдання"
+    common:
+      show_deed: 'Показати завдання'
+      back_to_deeds: 'Назад до всіх завдань'
+  main:
+    button_to_quit: "Вийти"
+    new_deed: "Нове завдання"
+    hide_just_created_task: "Сховати тільки створене завдання"
+    show_just_created_task: "Показати тільки створене завдання"
+    hide_completed_tasks: "Сховати завершені завдання"
+    show_completed_tasks: "Показати завершені завдання"
+    hide_all_tasks: "Сховати всі завдання"
+    show_all_tasks: "Показати всі завдання"
+  calendar:
+  passwords:
+    edit:
+      update_your_password: 'Змінити пароль'
+      enter_your_password: 'Введіть ваш пароль'
+      repeat_new_password: 'Повторно введіть ваш пароль'
+      save: 'Зберегти'
+    new:
+      enter_email: 'Введіть вашу електронну пошту'
+      email_reset_insturctions: 'Відправити інструкції з відновлення електронної пошти'
+  passwords_mailer:
+    reset:
+      reset_password_time_limit: 'У вас є 15 хвилин для зміни паролю'
+      password_reset_page: 'Перейти на сторінку зміни паролю'
+  sessions:
+    new:
+      enter_email: 'Введіть вашу електронну пошту'
+      enter_password: 'Введіть ваш пароль'
+      sign_in: 'Увійти'
+      forgot_password: 'Забули пароль?'
+      sign_up: 'Зареєструватися'
+  user_mailer:
+    confirmation_email:
+      confirm_title: 'Підтвердіть вашу реєстрацію'
+      thanks_signing_up: 'Дякуємо за реєстрацію! Будь ласка, підтвердіть свою електронну адресу, натиснувши кнопку нижче:'
+      fake_sign_up: 'Якщо ви не реєструвалися, ігноруйте це сповіщення.'
+  users:
+    new:
+      sign_up: 'Зареєструватися'
+      enter_email: 'Введіть вашу електронну пошту'
+      enter_password: 'Введіть ваш пароль'
+      have_account: 'Вже є аккаунт? Увійти.'
