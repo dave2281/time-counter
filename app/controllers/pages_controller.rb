@@ -27,7 +27,7 @@ class PagesController < ApplicationController
 
     @deeds = @deeds.to_a if @deeds.respond_to?(:to_a) && !@deeds.is_a?(Array)
     
-    @pagy, @records = pagy_array(@deeds, items: 8)
+    @pagy, @records = pagy_array(@deeds, items: 4)
   end
 
   def calendar

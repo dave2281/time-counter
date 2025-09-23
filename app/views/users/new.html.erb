@@ -1,34 +1,30 @@
 <% if flash[:alert] %>
-  <div class="fixed top-4 right-4 z-50 bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-xl shadow-lg border border-red-500/30">
-    🚨 <%= flash[:alert] %>
+  <div class="fixed top-4 right-4 z-50 bg-red-600/90 backdrop-blur text-white px-3 py-2 rounded-md shadow-lg text-sm">
+    <%= flash[:alert] %>
   </div>
 <% end %>
 <% if flash[:notice] %>
-  <div class="fixed top-4 right-4 z-50 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-xl shadow-lg border border-green-500/30">
-    ✅ <%= flash[:notice] %>
+  <div class="fixed top-4 right-4 z-50 bg-green-600/90 backdrop-blur text-white px-3 py-2 rounded-md shadow-lg text-sm">
+    <%= flash[:notice] %>
   </div>
 <% end %>
 
 <div class="min-h-screen flex items-center justify-center p-4">
-  <div class="max-w-md w-full">
+  <div class="max-w-sm w-full">
     
-    <div class="text-center mb-12">
-      <h1 class="text-6xl font-bold bg-gradient-to-r from-green-400 via-cyan-500 to-blue-500 bg-clip-text text-transparent mb-4 float-animation">
-        🌟 JOIN THE COSMOS
-      </h1>
-      <p class="text-gray-400 text-lg">Begin your journey through space and time</p>
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-semibold text-white mb-1">Create Account</h1>
+      <p class="text-gray-400 text-sm">Join TimeTracker</p>
     </div>
 
-    <div class="relative bg-gradient-to-br from-indigo-900/90 to-purple-900/90 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-8 shadow-2xl">
+    <div class="glass-effect rounded-lg p-6">
       
-      <%= form_for @user, class: "space-y-6" do |f| %>
+      <%= form_for @user, class: "space-y-4" do |f| %>
         
         <% if @user.errors.any? %>
-          <div class="bg-gradient-to-r from-red-900/50 to-pink-900/50 border border-red-500/30 rounded-2xl p-4 mb-6">
-            <h3 class="text-red-300 font-semibold mb-2 flex items-center">
-              🚨 Mission Control Error:
-            </h3>
-            <ul class="text-red-200 text-sm space-y-1">
+          <div class="bg-red-900/20 border border-red-700 rounded p-3 mb-4">
+            <h3 class="text-red-400 font-medium mb-2 text-sm">Please fix:</h3>
+            <ul class="text-red-300 text-xs space-y-1">
               <% @user.errors.full_messages.each do |message| %>
                 <li>• <%= message %></li>
               <% end %>
@@ -37,37 +33,35 @@
         <% end %>
 
         <div>
-          <%= f.label :email_address, class: "block text-cyan-300 text-sm font-semibold uppercase tracking-wider mb-3" do %>
-            📧 Cosmic Email Address
+          <%= f.label :email_address, class: "block text-xs font-medium text-gray-300 mb-1" do %>
+            Email
           <% end %>
           <%= f.email_field :email_address, 
-              class: "w-full bg-gray-900/50 border border-cyan-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300",
-              placeholder: "commander@cosmos.space" %>
+              class: "w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm",
+              placeholder: "your@email.com" %>
         </div>
 
         <div>
-          <%= f.label :password, class: "block text-purple-300 text-sm font-semibold uppercase tracking-wider mb-3" do %>
-            🔐 Create Access Code
+          <%= f.label :password, class: "block text-xs font-medium text-gray-300 mb-1" do %>
+            Password
           <% end %>
           <%= f.password_field :password, 
-              class: "w-full bg-gray-900/50 border border-purple-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300",
-              placeholder: "Enter a strong cosmic password..." %>
+              class: "w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm",
+              placeholder: "Strong password" %>
         </div>
 
-        <div class="pt-4">
-          <%= f.submit "🚀 Launch Into Cosmic Alliance", 
-              class: "w-full bg-gradient-to-r from-green-500 to-cyan-600 hover:from-green-400 hover:to-cyan-500 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-green-500/25" %>
+        <div>
+          <%= f.submit "Create Account", 
+              class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-md transition-colors text-sm hover-lift" %>
         </div>
         
-        <div class="text-center pt-4">
-          <%= link_to "🔙 Already a cosmic traveler? Sign In", new_session_path, 
-              class: "text-cyan-400 hover:text-cyan-300 font-medium transition-colors duration-300" %>
+        <div class="text-center text-xs text-gray-500">
+          Already have an account? 
+          <%= link_to "Sign in", new_session_path, 
+              class: "text-blue-400 hover:text-blue-300 transition-colors" %>
         </div>
 
       <% end %>
-      
-      <div class="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-r from-green-400 to-cyan-500 rounded-full animate-pulse opacity-70"></div>
-      <div class="absolute -bottom-6 -left-6 w-8 h-8 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full animate-bounce opacity-70"></div>
     </div>
   </div>
 </div>

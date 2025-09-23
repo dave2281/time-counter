@@ -1,12 +1,12 @@
 <%= form_with(model: deed, local: true) do |form| %>
-  <div class="relative bg-gradient-to-br from-indigo-900/90 to-purple-900/90 backdrop-blur-xl p-10 shadow-2xl">
+  <div class="glass-effect rounded-lg p-4">
     
     <%= form.hidden_field :user_id, value: Current.user.id %>
     
     <% if deed.errors.any? %>
-      <div class="mb-8 bg-gradient-to-r from-red-900/50 to-pink-900/50 border border-red-500/30 rounded-2xl p-6">
-        <h3 class="text-red-300 font-semibold mb-3">🚨 Mission Control Error:</h3>
-        <ul class="text-red-200 text-sm space-y-2">
+      <div class="mb-4 bg-red-900/20 border border-red-700 rounded p-3">
+        <h3 class="text-red-400 font-medium mb-2 text-sm">Please fix the following:</h3>
+        <ul class="text-red-300 text-xs space-y-1">
           <% deed.errors.full_messages.each do |message| %>
             <li>• <%= message %></li>
           <% end %>
@@ -14,31 +14,29 @@
       </div>
     <% end %>
 
-    <div class="mb-8">
-      <%= form.label :title, class: "block text-cyan-300 text-sm font-semibold uppercase tracking-wider mb-4" do %>
-        🚀 Mission Title
+    <div class="mb-4">
+      <%= form.label :title, class: "block text-xs font-medium text-gray-300 mb-2" do %>
+        Title
       <% end %>
       <%= form.text_field :title, 
-          class: "w-full bg-gray-900/50 border border-cyan-500/30 rounded-2xl px-6 py-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300 text-lg",
-          placeholder: "Enter your cosmic mission name..." %>
+          class: "w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm",
+          placeholder: "Enter task title..." %>
     </div>
 
-    <div class="mb-10">
-      <%= form.label :description, class: "block text-purple-300 text-sm font-semibold uppercase tracking-wider mt-4 mb-4" do %>
-        📝 Mission Briefing
+    <div class="mb-4">
+      <%= form.label :description, class: "block text-xs font-medium text-gray-300 mb-2" do %>
+        Description
       <% end %>
       <%= form.text_area :description, 
-          rows: 6,
-          class: "w-full bg-gray-900/50 border border-purple-500/30 rounded-2xl px-6 py-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 resize-none text-lg leading-relaxed",
-          placeholder: "Describe your cosmic quest in detail..." %>
+          rows: 3,
+          class: "w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none text-sm",
+          placeholder: "Describe your task..." %>
     </div>
 
-    <div class="flex justify-center mt-8">
-      <%= form.submit (deed.persisted? ? "🔄 Update Mission" : "🌟 Launch Mission"), 
-          class: "group relative overflow-hidden bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold py-5 px-10 rounded-3xl transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-cyan-500/25 text-lg" %>
+    <div class="flex justify-end gap-2">
+      <%= link_to "Cancel", root_path, class: "px-4 py-2 text-gray-400 hover:text-white text-sm transition-colors" %>
+      <%= form.submit (deed.persisted? ? "Update" : "Create"), 
+          class: "bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm hover-lift" %>
     </div>
-    
-    <div class="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full animate-bounce opacity-60"></div>
-    <div class="absolute -bottom-4 -left-4 w-6 h-6 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full animate-pulse opacity-60"></div>
   </div>
 <% end %>

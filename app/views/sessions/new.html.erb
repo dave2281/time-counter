@@ -1,71 +1,68 @@
-<!-- Флэш-сообщения -->
+<!-- Flash messages -->
 <% if flash[:alert] %>
-  <div class="fixed top-4 right-4 z-50 bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-xl shadow-lg border border-red-500/30">
-    🚨 <%= flash[:alert] %>
+  <div class="fixed top-4 right-4 z-50 bg-red-600/90 backdrop-blur text-white px-3 py-2 rounded-md shadow-lg text-sm">
+    <%= flash[:alert] %>
   </div>
 <% end %>
 <% if flash[:notice] %>
-  <div class="fixed top-4 right-4 z-50 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-xl shadow-lg border border-green-500/30">
-    ✅ <%= flash[:notice] %>
+  <div class="fixed top-4 right-4 z-50 bg-green-600/90 backdrop-blur text-white px-3 py-2 rounded-md shadow-lg text-sm">
+    <%= flash[:notice] %>
   </div>
 <% end %>
 
 <div class="min-h-screen flex items-center justify-center p-4">
-  <div class="max-w-md w-full">
+  <div class="max-w-sm w-full">
     
-    <div class="text-center mb-12">
-      <h1 class="text-6xl font-bold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4 float-animation">
-        🚀 COSMIC LOGIN
-      </h1>
-      <p class="text-gray-400 text-lg">Enter the space-time continuum</p>
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-semibold text-white mb-1">Sign In</h1>
+      <p class="text-gray-400 text-sm">Welcome back</p>
     </div>
 
-    <div class="relative bg-gradient-to-br from-indigo-900/90 to-purple-900/90 backdrop-blur-xl border border-purple-500/30 rounded-3xl p-8 shadow-2xl">
+    <div class="glass-effect rounded-lg p-6">
       
-      <%= form_with url: session_path, class: "space-y-6" do |form| %>
+      <%= form_with url: session_path, class: "space-y-4" do |form| %>
         
         <div>
-          <%= form.label :email_address, class: "block text-cyan-300 text-sm font-semibold uppercase tracking-wider mb-3" do %>
-            📧 Cosmic Email
+          <%= form.label :email_address, class: "block text-xs font-medium text-gray-300 mb-1" do %>
+            Email
           <% end %>
           <%= form.email_field :email_address, 
               required: true, 
               autofocus: true, 
               autocomplete: "username", 
-              placeholder: "commander@cosmos.space",
+              placeholder: "your@email.com",
               value: params[:email_address],
-              class: "w-full bg-gray-900/50 border border-cyan-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300" %>
+              class: "w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm" %>
         </div>
 
         <div>
-          <%= form.label :password, class: "block text-purple-300 text-sm font-semibold uppercase tracking-wider mb-3" do %>
-            🔐 Access Code
+          <%= form.label :password, class: "block text-xs font-medium text-gray-300 mb-1" do %>
+            Password
           <% end %>
           <%= form.password_field :password, 
               required: true, 
               autocomplete: "current-password", 
-              placeholder: "Enter your secret code...",
+              placeholder: "Password",
               maxlength: 72,
-              class: "w-full bg-gray-900/50 border border-purple-500/30 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300" %>
+              class: "w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm" %>
         </div>
 
-        <div class="pt-4">
-          <%= form.submit "🚀 Launch into Space", 
-              class: "w-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-cyan-500/25" %>
+        <div>
+          <%= form.submit "Sign In", 
+              class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-md transition-colors text-sm hover-lift" %>
         </div>
         
-        <div class="space-y-3 text-center pt-4">
-          <%= link_to "🔮 Forgot your cosmic password?", new_password_path, 
-              class: "block text-cyan-400 hover:text-cyan-300 font-medium transition-colors duration-300" %>
+        <div class="space-y-2 text-center text-xs">
+          <%= link_to "Forgot password?", new_password_path, 
+              class: "block text-blue-400 hover:text-blue-300 transition-colors" %>
           
-          <%= link_to "⭐ Join the cosmic alliance", signup_path, 
-              class: "block text-purple-400 hover:text-purple-300 font-medium transition-colors duration-300" %>
+          <div class="text-gray-500">
+            Don't have an account? 
+            <%= link_to "Sign up", signup_path, class: "text-blue-400 hover:text-blue-300 transition-colors" %>
+          </div>
         </div>
 
       <% end %>
-      
-      <div class="absolute -top-6 -right-6 w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full animate-pulse opacity-70"></div>
-      <div class="absolute -bottom-6 -left-6 w-8 h-8 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full animate-bounce opacity-70"></div>
     </div>
   </div>
 </div>

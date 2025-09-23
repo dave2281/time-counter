@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Cosmic Time Tracker" %></title>
+    <title><%= content_for(:title) || "TimeTracker" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -10,308 +10,42 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-      
       body {
-        font-family: 'Orbitron', monospace;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #0a0a0a;
+        color: #f5f5f5;
+        line-height: 1.4;
       }
-      
-      @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
-      }
-      
-      @keyframes twinkle {
-        0%, 100% { opacity: 0.3; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1.2); }
-      }
-      
-      @keyframes glow {
-        0%, 100% { box-shadow: 0 0 5px rgba(139, 92, 246, 0.5); }
-        50% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.8), 0 0 30px rgba(139, 92, 246, 0.6); }
-      }
-      
-      @keyframes rotate {
-        from { transform: translate(-50%, -50%) rotate(0deg); }
-        to { transform: translate(-50%, -50%) rotate(360deg); }
-      }
-      
-      @keyframes pulse {
-        0%, 100% { transform: translate(-50%, -50%) scale(1); }
-        50% { transform: translate(-50%, -50%) scale(1.1); }
-      }
-      
-      @keyframes floatParticle {
-        0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { transform: translateY(-100px) translateX(50px); opacity: 0; }
-      }
-      
-      .cosmic-bg {
-        background: radial-gradient(ellipse at bottom, #0d1d31 0%, #0c0d13 100%);
-        position: relative;
-        overflow: hidden;
-        min-height: 100vh;
-      }
-      
-      .stars {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 1;
-      }
-      
-      .star {
-        position: absolute;
-        background: white;
-        border-radius: 50%;
-        ani tion: twinkle 2s infinite;
-      }
-      
-      .star.bright {
-        width: 3px;
-        height: 3px;
-        box-shadow: 0 0 6px #fff, 0 0 12px #fff;
-      }
-      
-      .star.medium {
-        width: 2px;
-        height: 2px;
-        box-shadow: 0 0 4px #fff;
-      }
-      
-      .star.dim {
-        width: 1px;
-        height: 1px;
-        opacity: 0.6;
-      }
-      
-      .solar-system {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        width: 800px;
-        height: 800px;
-        transform: translate(-50%, -50%);
-        z-index: 1;
-        opacity: 0.2;
-        pointer-events: none;
-      }
-      
-      .sun {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100px;
-        height: 100px;
-        background: radial-gradient(circle, #ffd700 0%, #ff8c00 70%);
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        box-shadow: 0 0 50px #ffd700, 0 0 100px #ff8c00, 0 0 150px rgba(255, 215, 0, 0.5);
-        animation: pulse 3s ease-in-out infinite;
-      }
-      
-      .orbit {
-        position: absolute;
-        top: 50%;
-        left: 50%;
+      .glass-effect {
+        background: rgba(15, 15, 15, 0.8);
+        backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
       }
-      
-      .orbit1 { width: 200px; height: 200px; animation: rotate 12s linear infinite; }
-      .orbit2 { width: 260px; height: 260px; animation: rotate 18s linear infinite; }
-      .orbit3 { width: 320px; height: 320px; animation: rotate 24s linear infinite; }
-      .orbit4 { width: 380px; height: 380px; animation: rotate 30s linear infinite; }
-      .orbit5 { width: 440px; height: 440px; animation: rotate 36s linear infinite; }
-      .orbit6 { width: 500px; height: 500px; animation: rotate 42s linear infinite; }
-      .orbit7 { width: 560px; height: 560px; animation: rotate 48s linear infinite; }
-      .orbit8 { width: 620px; height: 620px; animation: rotate 54s linear infinite; }
-      
-      .planet {
-        position: absolute;
-        border-radius: 50%;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-      
-      .planet1 { width: 12px; height: 12px; background: #ff6b47; box-shadow: 0 0 8px #ff6b47; }
-      .planet2 { width: 16px; height: 16px; background: #4fc3f7; box-shadow: 0 0 10px #4fc3f7; }
-      .planet3 { width: 14px; height: 14px; background: #8bc34a; box-shadow: 0 0 9px #8bc34a; }
-      .planet4 { width: 10px; height: 10px; background: #e91e63; box-shadow: 0 0 7px #e91e63; }
-      .planet5 { width: 18px; height: 18px; background: #ff9800; box-shadow: 0 0 12px #ff9800; }
-      .planet6 { width: 16px; height: 16px; background: #ffeb3b; box-shadow: 0 0 10px #ffeb3b; }
-      .planet7 { width: 14px; height: 14px; background: #3f51b5; box-shadow: 0 0 8px #3f51b5; }
-      .planet8 { width: 12px; height: 12px; background: #9c27b0; box-shadow: 0 0 7px #9c27b0; }
-      
-      .cosmic-particles {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 1;
-      }
-      
-      .particle {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        background: rgba(100, 200, 255, 0.8);
-        animation: floatParticle 15s infinite linear;
-      }
-      
-      .cosmic-content {
-        position: relative;
-        z-index: 10;
-      }
-      
-      .float-animation {
-        animation: float 3s ease-in-out infinite;
-      }
-      
-      .glow-effect {
-        animation: glow 2s ease-in-out infinite alternate;
+      .hover-lift:hover {
+        transform: translateY(-1px);
       }
     </style>
   </head>
-  <body class="cosmic-bg min-h-screen">
-    <div class="stars"></div>
-    
-    <div class="cosmic-particles"></div>
-    
-    <div class="solar-system">
-      <div class="sun"></div>
-      <div class="orbit orbit1">
-        <div class="planet planet1"></div>
-      </div>
-      <div class="orbit orbit2">
-        <div class="planet planet2"></div>
-      </div>
-      <div class="orbit orbit3">
-        <div class="planet planet3"></div>
-      </div>
-      <div class="orbit orbit4">
-        <div class="planet planet4"></div>
-      </div>
-      <div class="orbit orbit5">
-        <div class="planet planet5"></div>
-      </div>
-      <div class="orbit orbit6">
-        <div class="planet planet6"></div>
-      </div>
-      <div class="orbit orbit7">
-        <div class="planet planet7"></div>
-      </div>
-      <div class="orbit orbit8">
-        <div class="planet planet8"></div>
-      </div>
-    </div>
-    
-    <div class="cosmic-content">
-      <%= yield %>
-    </div>
+  <body class="bg-gray-950 text-gray-50 min-h-screen">
+    <%= yield %>
     
     <script>
-      function createStars() {
-        const starsContainer = document.querySelector('.stars');
-        const numberOfStars = 200;
-        
-        for (let i = 0; i < numberOfStars; i++) {
-          const star = document.createElement('div');
-          star.className = 'star';
-          
-          const random = Math.random();
-          if (random > 0.85) {
-            star.classList.add('bright');
-          } else if (random > 0.6) {
-            star.classList.add('medium');
-          } else {
-            star.classList.add('dim');
-          }
-          
-          star.style.left = Math.random() * 100 + '%';
-          star.style.top = Math.random() * 100 + '%';
-          star.style.animationDelay = Math.random() * 2 + 's';
-          star.style.animationDuration = (Math.random() * 3 + 2) + 's';
-          
-          starsContainer.appendChild(star);
-        }
-      }
-      
-      function createParticles() {
-        const particlesContainer = document.querySelector('.cosmic-particles');
-        const numberOfParticles = 20;
-        
-        for (let i = 0; i < numberOfParticles; i++) {
-          const particle = document.createElement('div');
-          particle.className = 'particle';
-          particle.style.left = Math.random() * 100 + '%';
-          particle.style.animationDelay = Math.random() * 15 + 's';
-          particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-          
-          particlesContainer.appendChild(particle);
-        }
-      }
-      
-      function randomizePlanetPositions() {
-        const orbits = document.querySelectorAll('.orbit');
-        
-        orbits.forEach((orbit, index) => {
-          const randomRotation = Math.random() * 360;
-          
-          orbit.style.transform = `translate(-50%, -50%) rotate(${randomRotation}deg)`;
-          
-          const baseSpeed = [12, 18, 24, 30, 36, 42, 48, 54][index];
-          const speedVariation = (Math.random() - 0.5) * 4;
-          const newSpeed = baseSpeed + speedVariation;
-         
-          const randomDelay = -(Math.random() * newSpeed);
-          
-          orbit.style.animationDuration = `${newSpeed}s`;
-          orbit.style.animationDelay = `${randomDelay}s`;
-          
-          orbit.style.animation = 'none';
-          orbit.offsetHeight; 
-          orbit.style.animation = `rotate ${newSpeed}s linear infinite ${randomDelay}s`;
-        });
-      }
-      
       document.addEventListener('DOMContentLoaded', function() {
-        createStars();
-        createParticles();
-        randomizePlanetPositions();
-      });
-      
-      document.addEventListener('turbo:load', function() {
-        document.querySelector('.stars').innerHTML = '';
-        document.querySelector('.cosmic-particles').innerHTML = '';
-        
-        createStars();
-        createParticles();
-        
-        randomizePlanetPositions();
+        // Enhanced minimal functionality
+        document.body.classList.add('opacity-0');
+        setTimeout(() => {
+          document.body.classList.remove('opacity-0');
+          document.body.classList.add('transition-opacity', 'duration-300', 'opacity-100');
+        }, 50);
       });
     </script>
   </body>

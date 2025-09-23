@@ -1,44 +1,22 @@
-<% content_for :title, "Create Cosmic Deed" %>
+<% content_for :title, "New Task" %>
 
 <div class="min-h-screen">
-  <section class="text-white py-12 px-6">
-    <div class="text-center mb-12">
-      <h1 class="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 bg-clip-text mb-6 float-animation">
-        🌟 CREATE COSMIC DEED 🌟
-      </h1>
-      <p class="text-xl text-gray-300 font-light">Launch a new mission into the cosmos of productivity</p>
-    </div>
-  </section>
-
-  <div class="sticky top-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/10 rounded-b-3xl mx-4">
-    <div class="container mx-auto px-6 py-6">
-      <div class="flex justify-center gap-6">
-        <%= link_to "🌌 Back to Galaxy", root_path,
-          class: "px-8 py-3 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl border border-blue-500/30 transition-all duration-300 hover:scale-105 text-center shadow-lg hover:shadow-blue-500/25" %>
-
-        <%= link_to "📝 View All Deeds", deeds_path,
-          class: "px-8 py-3 text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl border border-purple-500/30 transition-all duration-300 hover:scale-105 text-center shadow-lg hover:shadow-purple-500/25" %>
+  <!-- Compact header -->
+  <div class="bg-gray-900 border-b border-gray-800">
+    <div class="max-w-2xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <%= link_to root_path, class: "text-gray-400 hover:text-white transition-colors text-sm" do %>
+            ← Tasks
+          <% end %>
+          <div class="h-4 w-px bg-gray-700"></div>
+          <h1 class="text-lg font-medium text-white">New Task</h1>
+        </div>
       </div>
     </div>
   </div>
 
-  <section class="container mx-auto px-6 py-12 text-white relative z-20">
-    <div class="mt-8 mb-12">
-      <div class="max-w-3xl mx-auto">
-        <%= render "form", deed: @deed %>
-      </div>
-    </div>
-  </section>
+  <div class="max-w-2xl mx-auto px-4 py-4">
+    <%= render "form", deed: @deed %>
+  </div>
 </div>
-
-<style>
-  .float-animation {
-    animation: float 3s ease-in-out infinite;
-  }
-  
-  @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
-  }
-</style>
