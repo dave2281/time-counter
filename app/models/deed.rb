@@ -1,6 +1,7 @@
 class Deed < ApplicationRecord
   has_many :daily_logs, dependent: :destroy
   belongs_to :user
+  before_save :max_deeds_to_create
 
   validates_presence_of :title
 
@@ -35,10 +36,21 @@ class Deed < ApplicationRecord
     Rails.cache.read(cache_key).present?
   end
 
-  def self.with_running_timers(user_id)
-    where(user_id: user_id).select do |deed|
-      cache_key = "daily_log_#{user_id}_#{deed.id}"
-      Rails.cache.read(cache_key).present?
+  def max_deeds_to_create
+    if user.deeds.count >= 20 
+      errors.add(:base, "You have reached the maximum number of deeds (30). Please delete some deeds before creating new ones.")
+      throw(:abort)
     end
+  end
+
+  def self.with_running_timers(user_id)
+    running_deed_ids = []
+
+    where(user_id: user_id).find_each do |deed|
+      cache_key = "daily_log_#{user_id}_#{deed.id}"
+      running_deed_ids << deed.id if Rails.cache.read(cache_key).present?
+    end
+
+    where(id: running_deed_ids)
   end
 end

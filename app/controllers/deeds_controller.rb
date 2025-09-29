@@ -3,7 +3,6 @@ class DeedsController < ApplicationController
 
   # GET /deeds/1 or /deeds/1.json
   def show
-    @deed = Deed.find(params[:id])
   end
 
   # GET /deeds/new
@@ -17,7 +16,7 @@ class DeedsController < ApplicationController
 
   # POST /deeds or /deeds.json
   def create
-    @deed = Deed.new(deed_params)
+    @deed = Current.user.deeds.build(deed_params)
 
     respond_to do |format|
       if @deed.save
@@ -45,22 +44,23 @@ class DeedsController < ApplicationController
 
   # DELETE /deeds/1 or /deeds/1.json
   def destroy
-    @deed = Deed.find(params[:id])
     @deed.destroy
     respond_to do |format|
       format.html { redirect_to root_path, notice: "Deed was successfully deleted." }
       format.json { head :no_content }
     end
-  end  
-  
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_deed
-      @deed = Deed.find(params.require(:id))
-    end    
+      @deed = Current.user.deeds.find(params.require(:id))
+    rescue ActiveRecord::RecordNotFound
+      redirect_to root_path, alert: "Task not found or access denied."
+    end
 
     def deed_params
-      params.require(:deed).permit(:title, :description, :user_id, :finished, :color)
-    end  
+      params.require(:deed).permit(:title, :description, :finished, :color)
+    end
 end

@@ -18,6 +18,8 @@ class User < ApplicationRecord
     update!(confirmed_at: Time.current, confirmation_token: nil)
   end
 
+
+
   private
 
   def generate_confirmation_token

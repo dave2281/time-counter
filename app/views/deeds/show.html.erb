@@ -120,15 +120,15 @@
       if (checkbox.checked) {
         icon.textContent = '✓';
         icon.className = 'text-green-400';
-        text.textContent = 'Task Completed';
-        submitBtn.textContent = 'Mark as Complete';
-        submitBtn.className = 'px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg';
+        text.textContent = 'Done';
+        submitBtn.textContent = 'Complete';
+        submitBtn.className = 'px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors text-xs hover-lift';
       } else {
         icon.textContent = '○';
         icon.className = 'text-gray-400';
-        text.textContent = 'Mark as Finished';
-        submitBtn.textContent = 'Update Task Status';
-        submitBtn.className = 'px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg';
+        text.textContent = 'Mark Done';
+        submitBtn.textContent = 'Update';
+        submitBtn.className = 'px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors text-xs hover-lift';
       }
     }
   </script>
@@ -230,7 +230,9 @@
             })
               .then(res => res.json())
               .then(data => {
-                  updateUI(true, data.start_time, 0);
+                  if (data.running) {
+                      updateUI(true, data.start_time, 0);
+                  }
               })
               .catch(error => console.error("Start timer error:", error));
         });
@@ -246,8 +248,12 @@
             })
               .then(res => res.json())
               .then(data => {
-                  updateUI(false, null, data.elapsed_time);
-                  document.getElementById("today-time").textContent = data.today_formatted;
+                  if (data.hasOwnProperty('running')) {
+                      updateUI(false, null, data.elapsed_time);
+                      if (data.today_formatted) {
+                          document.getElementById("today-time").textContent = data.today_formatted;
+                      }
+                  }
               })
               .catch(error => console.error("Stop timer error:", error));
         });

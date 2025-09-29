@@ -1,8 +1,6 @@
 <%= form_with(model: deed, local: true) do |form| %>
   <div class="glass-effect rounded-lg p-4">
     
-    <%= form.hidden_field :user_id, value: Current.user.id %>
-    
     <% if deed.errors.any? %>
       <div class="mb-4 bg-red-900/20 border border-red-700 rounded p-3">
         <h3 class="text-red-400 font-medium mb-2 text-sm">Please fix the following:</h3>

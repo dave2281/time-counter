@@ -2,7 +2,8 @@ class DailyLogsController < ApplicationController
   before_action :set_dailylog, only: %i[ show edit update destroy ]
 
   def toggle_timer
-    cache_key = "daily_log_#{Current.user.id}_#{params[:deed_id]}"
+    deed = Current.user.deeds.find(params[:deed_id])
+    cache_key = "daily_log_#{Current.user.id}_#{deed.id}"
     start_time = Rails.cache.read(cache_key)
 
     if start_time.nil?
@@ -14,7 +15,7 @@ class DailyLogsController < ApplicationController
 
       DailyLog.create!(
         user_id: Current.user.id,
-        deed_id: params[:deed_id],
+        deed_id: deed.id,
         start_time: start_time,
         end_time: end_time
       )
@@ -23,23 +24,29 @@ class DailyLogsController < ApplicationController
 
       render json: { running: false, elapsed_time: elapsed.to_i }
     end
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Task not found" }, status: :not_found
   end
 
   def start_timer
-    cache_key = "daily_log_#{Current.user.id}_#{params[:deed_id]}"
+    deed = Current.user.deeds.find(params[:deed_id])
+    cache_key = "daily_log_#{Current.user.id}_#{deed.id}"
     start_time = Time.current
-    
+
     Rails.cache.write(cache_key, start_time)
-    
-    render json: { 
-      running: true, 
+
+    render json: {
+      running: true,
       start_time: start_time.to_f * 1000,
-      elapsed_time: 0 
+      elapsed_time: 0
     }
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Task not found" }, status: :not_found
   end
 
   def stop_timer
-    cache_key = "daily_log_#{Current.user.id}_#{params[:deed_id]}"
+    deed = Current.user.deeds.find(params[:deed_id])
+    cache_key = "daily_log_#{Current.user.id}_#{deed.id}"
     start_time = Rails.cache.read(cache_key)
 
     if start_time
@@ -48,45 +55,48 @@ class DailyLogsController < ApplicationController
 
       DailyLog.create!(
         user_id: Current.user.id,
-        deed_id: params[:deed_id],
+        deed_id: deed.id,
         start_time: start_time,
         end_time: end_time
       )
 
       Rails.cache.delete(cache_key)
 
-      deed = Deed.find(params[:deed_id])
-      
-      render json: { 
-        running: false, 
+      render json: {
+        running: false,
         elapsed_time: elapsed.to_i,
         today_formatted: deed.today
       }
     else
-      render json: { 
-        running: false, 
+      render json: {
+        running: false,
         elapsed_time: 0,
         today_formatted: "0h0m0s"
       }
     end
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Task not found" }, status: :not_found
   end
 
 
 
   def timer_status
-    cache_key = "daily_log_#{Current.user.id}_#{params[:deed_id]}"
+    deed = Current.user.deeds.find(params[:deed_id])
+    cache_key = "daily_log_#{Current.user.id}_#{deed.id}"
     start_time = Rails.cache.read(cache_key)
 
     if start_time.nil?
       render json: { running: false, elapsed_time: 0 }
     else
       elapsed = Time.current - start_time
-      render json: { 
-        running: true, 
+      render json: {
+        running: true,
         elapsed_time: elapsed.to_i,
-        start_time: start_time.to_f * 1000 
+        start_time: start_time.to_f * 1000
       }
     end
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: "Task not found" }, status: :not_found
   end
 
   def index
