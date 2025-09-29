@@ -35,4 +35,10 @@ class PagesController < ApplicationController
   def calendar
     @deeds = Current.user.deeds
   end
+
+  def about_project 
+  end
+
+  def contacts
+  end
 end

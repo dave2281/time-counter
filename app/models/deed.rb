@@ -32,8 +32,11 @@ class Deed < ApplicationRecord
   end
 
   def timer_running?
-    cache_key = "daily_log_#{user_id}_#{id}"
-    Rails.cache.read(cache_key).present?
+    daily_logs.active_timers.exists?
+  end
+
+  def active_timer
+    daily_logs.active_timers.first
   end
 
   def max_deeds_to_create
@@ -44,13 +47,8 @@ class Deed < ApplicationRecord
   end
 
   def self.with_running_timers(user_id)
-    running_deed_ids = []
-
-    where(user_id: user_id).find_each do |deed|
-      cache_key = "daily_log_#{user_id}_#{deed.id}"
-      running_deed_ids << deed.id if Rails.cache.read(cache_key).present?
-    end
-
-    where(id: running_deed_ids)
+    joins(:daily_logs)
+      .where(user_id: user_id, daily_logs: { timer_is_active: true })
+      .distinct
   end
 end

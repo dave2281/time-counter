@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_22_062348) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_29_134718) do
   create_table "daily_logs", force: :cascade do |t|
     t.datetime "start_time"
     t.datetime "end_time"
@@ -18,6 +18,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_22_062348) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "timer_is_active", default: false
     t.index ["deed_id"], name: "index_daily_logs_on_deed_id"
     t.index ["user_id"], name: "index_daily_logs_on_user_id"
   end

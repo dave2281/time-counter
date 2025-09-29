@@ -228,13 +228,23 @@
                 },
                 body: JSON.stringify({ deed_id: deedId })
             })
-              .then(res => res.json())
+              .then(res => {
+                  if (!res.ok) {
+                      return res.json().then(err => Promise.reject(err));
+                  }
+                  return res.json();
+              })
               .then(data => {
                   if (data.running) {
                       updateUI(true, data.start_time, 0);
                   }
               })
-              .catch(error => console.error("Start timer error:", error));
+              .catch(error => {
+                  console.error("Start timer error:", error);
+                  if (error.error) {
+                      alert(error.error);
+                  }
+              });
         });
 
         stopButton.addEventListener("click", () => {
