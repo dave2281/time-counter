@@ -1,16 +1,34 @@
 class DailyLogsController < ApplicationController
-  before_action :set_dailylog, only: %i[ show edit update destroy ]
-
-
+  before_action :set_dailylog, only: %i[ edit update destroy ]
 
   def start_timer
+    # Simple rate limiting - max 10 timer operations per minute per user
+    cache_key = "timer_operations:#{Current.user.id}"
+    operations_count = Rails.cache.read(cache_key) || 0
+
+    if operations_count >= 10
+      render json: { error: "Too many timer operations. Please wait a moment." }, status: :too_many_requests
+      return
+    end
+
+    Rails.cache.write(cache_key, operations_count + 1, expires_in: 1.minute)
+
     deed = Current.user.deeds.find(params[:deed_id])
-    
+
+    # Проверяем лимит активных таймеров заранее
+    active_count = Current.user.daily_logs.active_timers.count
+    if active_count >= 3
+      render json: {
+        error: "You have reached the maximum number of active timers (3). Please stop some timers before starting new ones."
+      }, status: :unprocessable_entity
+      return
+    end
+
     # Останавливаем активный таймер если есть
     if deed.timer_running?
       deed.active_timer.stop_timer!
     end
-    
+
     # Создаем новый активный таймер
     daily_log = deed.daily_logs.build(
       user: Current.user,
@@ -25,12 +43,15 @@ class DailyLogsController < ApplicationController
         elapsed_time: 0
       }
     else
-      render json: { 
+      render json: {
         error: daily_log.errors.full_messages.first || "Failed to start timer"
       }, status: :unprocessable_entity
     end
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Task not found" }, status: :not_found
+  rescue => e
+    Rails.logger.error "Timer start error: #{e.message}"
+    render json: { error: "Unable to start timer. Please try again." }, status: :internal_server_error
   end
 
   def stop_timer
@@ -71,13 +92,16 @@ class DailyLogsController < ApplicationController
         start_time: active_timer.start_time.to_f * 1000
       }
     else
-      render json: { 
-        running: false, 
-        elapsed_time: 0 
+      render json: {
+        running: false,
+        elapsed_time: 0
       }
     end
   rescue ActiveRecord::RecordNotFound
-    render json: { error: "Task not found" }, status: :not_found
+    render json: { running: false, elapsed_time: 0 }
+  rescue => e
+    Rails.logger.error "Timer status error: #{e.message}"
+    render json: { running: false, elapsed_time: 0 }
   end
 
   def index
@@ -131,7 +155,9 @@ class DailyLogsController < ApplicationController
 
   private
     def set_dailylog
-      @dailylog = Dailylog.find(params.expect(:id))
+      @dailylog = Current.user.daily_logs.find(params.expect(:id))
+    rescue ActiveRecord::RecordNotFound
+      redirect_to root_path, alert: "Daily log not found or access denied."
     end
 
     def dailylog_params

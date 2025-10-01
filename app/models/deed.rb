@@ -40,7 +40,7 @@ class Deed < ApplicationRecord
   end
 
   def max_deeds_to_create
-    if user.deeds.count >= 20 
+    if user.deeds.count >= 20
       errors.add(:base, "You have reached the maximum number of deeds (30). Please delete some deeds before creating new ones.")
       throw(:abort)
     end

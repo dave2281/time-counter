@@ -78,3 +78,19 @@ pickle-email-*.html
 *.old
 *.jar
 xerial*.*
+
+# Security - Environment variables and secrets
+.env
+.env.*
+!.env.example
+config/master.key
+config/credentials/*.key
+
+# Security reports
+brakeman_report.txt
+security_report.txt
+
+# Backup files that might contain sensitive data
+*.sql
+*.dump
+backup/

@@ -5,6 +5,8 @@ class User < ApplicationRecord
   has_many :daily_logs, dependent: :destroy
 
   validates_presence_of :email_address
+  validates :email_address, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :password, length: { minimum: 8 }, if: :password_required?
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
@@ -25,5 +27,9 @@ class User < ApplicationRecord
   def generate_confirmation_token
     self.confirmation_token = SecureRandom.urlsafe_base64
     self.confirmation_sent_at = Time.current
+  end
+
+  def password_required?
+    password.present? || password_confirmation.present?
   end
 end
