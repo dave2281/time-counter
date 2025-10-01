@@ -4,10 +4,20 @@
     <div class="container mx-auto max-w-6xl px-4 py-3">
       <div class="flex items-center justify-between">
         <h1 class="text-xl font-semibold text-white">About Project</h1>
-        <div class="flex items-center gap-2">
-          <%= link_to root_path, class: "px-4 py-1.5 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors hover-lift" do %>
-            ← Back to Tasks
+        
+        <!-- Navigation Links -->
+        <div class="flex items-center gap-4">
+          <%= link_to root_path, class: "text-sm text-gray-400 hover:text-white transition-colors" do %>
+            Tasks
           <% end %>
+          <%= link_to contacts_path, class: "text-sm text-gray-400 hover:text-white transition-colors" do %>
+            Contacts
+          <% end %>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <%= button_to "Exit", session_path, method: :delete,
+            class: "px-3 py-1.5 text-xs text-gray-400 hover:text-red-400 transition-colors" %>
         </div>
       </div>
     </div>
@@ -23,7 +33,7 @@
       </div>
       <h2 class="text-3xl font-bold text-white mb-4">Time Tracker</h2>
       <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-        Professional time management solution built with Ruby on Rails for tracking work productivity and project time allocation.
+        A simple and efficient task management application with real-time tracking capabilities. Create tasks, track time, and organize your work with intuitive filtering and pagination.
       </p>
     </div>
 
@@ -38,7 +48,7 @@
           </div>
           <h3 class="text-lg font-semibold text-white">Task Management</h3>
         </div>
-        <p class="text-gray-400">Create, organize and track tasks with intuitive interface and smart categorization.</p>
+        <p class="text-gray-400">Create up to 20 tasks with titles and descriptions. Mark tasks as finished when completed.</p>
       </div>
 
       <div class="glass-card p-6 hover-lift">
@@ -48,115 +58,131 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-white">Real-time Tracking</h3>
+          <h3 class="text-lg font-semibold text-white">Real-time Timers</h3>
         </div>
-        <p class="text-gray-400">Start and stop timers with precision tracking and automatic time calculation.</p>
+        <p class="text-gray-400">Start/stop timers for each task with up to 3 concurrent active timers. Automatic time calculation and display.</p>
       </div>
 
       <div class="glass-card p-6 hover-lift">
         <div class="flex items-center mb-4">
           <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-white">Analytics & Reports</h3>
+          <h3 class="text-lg font-semibold text-white">Smart Filtering</h3>
         </div>
-        <p class="text-gray-400">Detailed insights into time usage with daily, weekly and project-based reporting.</p>
+        <p class="text-gray-400">Filter tasks by status: New (never started), Active (currently running), Done (completed), or view All tasks.</p>
       </div>
 
       <div class="glass-card p-6 hover-lift">
         <div class="flex items-center mb-4">
-          <div class="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center mr-3">
+          <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center mr-3">
             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-white">Fast & Reliable</h3>
+          <h3 class="text-lg font-semibold text-white">Time Logging</h3>
         </div>
-        <p class="text-gray-400">Built with modern Rails architecture for optimal performance and reliability.</p>
-      </div>
-
-      <div class="glass-card p-6 hover-lift">
-        <div class="flex items-center mb-4">
-          <div class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center mr-3">
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-white">Secure & Private</h3>
-        </div>
-        <p class="text-gray-400">Your data is protected with enterprise-grade security and privacy measures.</p>
+        <p class="text-gray-400">Automatic daily log creation with start/end times. Track total time spent on each task and daily progress.</p>
       </div>
 
       <div class="glass-card p-6 hover-lift">
         <div class="flex items-center mb-4">
           <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center mr-3">
             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-white">Customizable</h3>
+          <h3 class="text-lg font-semibold text-white">Pagination</h3>
         </div>
-        <p class="text-gray-400">Flexible settings and configurations to match your workflow and preferences.</p>
+        <p class="text-gray-400">Clean interface with 4 tasks per page using Pagy gem for efficient browsing of your task list.</p>
+      </div>
+
+      <div class="glass-card p-6 hover-lift">
+        <div class="flex items-center mb-4">
+          <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mr-3">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-white">User Authentication</h3>
+        </div>
+        <p class="text-gray-400">Secure user registration and login system with bcrypt password hashing and session management.</p>
       </div>
     </div>
 
     <!-- Tech Stack -->
     <div class="glass-card p-8 mb-12">
-      <h3 class="text-2xl font-bold text-white mb-6 text-center">Built With Modern Technology</h3>
+      <h3 class="text-2xl font-bold text-white mb-6 text-center">Built With</h3>
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="text-center">
           <div class="w-12 h-12 mx-auto mb-3 bg-red-600 rounded-lg flex items-center justify-center">
             <span class="text-white font-bold text-sm">RB</span>
           </div>
-          <h4 class="text-white font-medium">Ruby on Rails</h4>
-          <p class="text-gray-400 text-sm">Backend Framework</p>
+          <h4 class="text-white font-medium">Ruby on Rails 8</h4>
+          <p class="text-gray-400 text-sm">MVC Framework</p>
         </div>
         <div class="text-center">
           <div class="w-12 h-12 mx-auto mb-3 bg-blue-500 rounded-lg flex items-center justify-center">
             <span class="text-white font-bold text-sm">TW</span>
           </div>
           <h4 class="text-white font-medium">Tailwind CSS</h4>
-          <p class="text-gray-400 text-sm">UI Styling</p>
+          <p class="text-gray-400 text-sm">Utility-First CSS</p>
         </div>
         <div class="text-center">
-          <div class="w-12 h-12 mx-auto mb-3 bg-yellow-500 rounded-lg flex items-center justify-center">
-            <span class="text-white font-bold text-sm">JS</span>
+          <div class="w-12 h-12 mx-auto mb-3 bg-purple-500 rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-sm">ST</span>
           </div>
-          <h4 class="text-white font-medium">JavaScript</h4>
-          <p class="text-gray-400 text-sm">Interactive Features</p>
+          <h4 class="text-white font-medium">Stimulus + Turbo</h4>
+          <p class="text-gray-400 text-sm">Hotwire Stack</p>
         </div>
         <div class="text-center">
-          <div class="w-12 h-12 mx-auto mb-3 bg-green-600 rounded-lg flex items-center justify-center">
+          <div class="w-12 h-12 mx-auto mb-3 bg-gray-600 rounded-lg flex items-center justify-center">
             <span class="text-white font-bold text-sm">DB</span>
           </div>
-          <h4 class="text-white font-medium">SQLite/PostgreSQL</h4>
+          <h4 class="text-white font-medium">SQLite</h4>
           <p class="text-gray-400 text-sm">Database</p>
+        </div>
+      </div>
+      
+      <!-- Additional gems -->
+      <div class="mt-8 pt-6 border-t border-gray-700">
+        <h4 class="text-lg font-semibold text-white mb-4 text-center">Key Dependencies</h4>
+        <div class="flex flex-wrap justify-center gap-3">
+          <span class="px-3 py-1 bg-gray-800 text-gray-300 text-sm rounded-full">BCrypt (Authentication)</span>
+          <span class="px-3 py-1 bg-gray-800 text-gray-300 text-sm rounded-full">Pagy (Pagination)</span>
+          <span class="px-3 py-1 bg-gray-800 text-gray-300 text-sm rounded-full">Solid Cache/Queue</span>
+          <span class="px-3 py-1 bg-gray-800 text-gray-300 text-sm rounded-full">Kamal (Deployment)</span>
+          <span class="px-3 py-1 bg-gray-800 text-gray-300 text-sm rounded-full">RSpec (Testing)</span>
         </div>
       </div>
     </div>
 
     <!-- Project Info -->
     <div class="glass-card p-8 text-center">
-      <h3 class="text-2xl font-bold text-white mb-4">Project Information</h3>
+      <h3 class="text-2xl font-bold text-white mb-4">How It Works</h3>
       <div class="max-w-2xl mx-auto">
         <p class="text-gray-300 mb-4">
-          This Time Tracker application was developed as a comprehensive solution for professional time management and productivity tracking. 
-          Built with Ruby on Rails 8.0 and modern web technologies, it provides a robust platform for individuals and teams to monitor work hours, 
-          track project progress, and generate detailed time reports.
+          This Time Tracker is a focused productivity tool built with Ruby on Rails 8. It allows you to create tasks (called "deeds"), 
+          track time spent on each task using start/stop timers, and organize your work efficiently.
+        </p>
+        <p class="text-gray-400 mb-4">
+          Key features include: task creation with titles and descriptions, real-time timer functionality with up to 3 concurrent active timers, 
+          automatic time calculation and logging, smart filtering (New/Active/Done/All), and paginated task display for better organization.
         </p>
         <p class="text-gray-400 mb-6">
-          The application features real-time timer functionality, task categorization, advanced filtering options, and comprehensive reporting capabilities. 
-          All data is securely stored and easily accessible through an intuitive, responsive web interface.
+          The application includes user authentication, limits of 20 tasks per user for focused productivity, and a clean, responsive dark interface 
+          built with Tailwind CSS. All timer data is automatically saved with precise start/end timestamps.
         </p>
         <div class="flex justify-center items-center gap-4 text-sm text-gray-400">
-          <span>Version 1.0.0</span>
-          <span>•</span>
           <span>Rails 8.0.1</span>
           <span>•</span>
-          <span>Ruby 3.3.5</span>
+          <span>Ruby 3.3+</span>
+          <span>•</span>
+          <span>SQLite Database</span>
+          <span>•</span>
+          <span>Docker Ready</span>
         </div>
       </div>
     </div>

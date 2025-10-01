@@ -3,17 +3,23 @@
   <div class="bg-gray-900 border-b border-gray-800">
     <div class="container mx-auto max-w-6xl px-4 py-3">
       <div class="flex items-center justify-between">
-        <h1 class="text-xl font-semibold text-white">Contact Us</h1>
-        <div class="flex items-center gap-2">
-          <%= link_to root_path, class: "px-4 py-1.5 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors hover-lift" do %>
-            ← Back to Tasks
+        <h1 class="text-xl font-semibold text-white">Contacts</h1>        
+        <div class="flex items-center gap-4">
+          <%= link_to root_path, class: "text-sm text-gray-400 hover:text-white transition-colors" do %>
+            Tasks
           <% end %>
+          <%= link_to about_project_path, class: "text-sm text-gray-400 hover:text-white transition-colors" do %>
+            About Project
+          <% end %>
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <%= button_to "Exit", session_path, method: :delete,
+            class: "px-3 py-1.5 text-xs text-gray-400 hover:text-red-400 transition-colors" %>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="container mx-auto max-w-4xl py-8 px-4">
+  </div>  <div class="container mx-auto max-w-4xl py-8 px-4">
     <!-- Hero Section -->
     <div class="text-center mb-12">
       <div class="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full mb-4">
@@ -21,58 +27,15 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
         </svg>
       </div>
-      <h2 class="text-3xl font-bold text-white mb-4">Get in Touch</h2>
+      <h2 class="text-3xl font-bold text-white mb-4">My Contacts</h2>
       <p class="text-xl text-gray-400 max-w-2xl mx-auto">
-        Have questions, suggestions, or need support? We'd love to hear from you and help improve your time tracking experience.
+        Contact me for any project-related questions. I'll be happy to help and answer your questions.
       </p>
     </div>
 
-    <div class="grid lg:grid-cols-2 gap-8 mb-12">
-      <!-- Contact Form -->
-      <div class="glass-card p-8">
-        <h3 class="text-2xl font-bold text-white mb-6">Send us a Message</h3>
-        <form class="space-y-6">
-          <div>
-            <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
-            <input type="text" id="name" name="name" 
-                   class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
-          </div>
-          
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email Address</label>
-            <input type="email" id="email" name="email" 
-                   class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
-          </div>
-          
-          <div>
-            <label for="subject" class="block text-sm font-medium text-gray-300 mb-2">Subject</label>
-            <select id="subject" name="subject" 
-                    class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors">
-              <option value="">Select a topic</option>
-              <option value="support">Technical Support</option>
-              <option value="feature">Feature Request</option>
-              <option value="bug">Bug Report</option>
-              <option value="general">General Inquiry</option>
-              <option value="business">Business Partnership</option>
-            </select>
-          </div>
-          
-          <div>
-            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Message</label>
-            <textarea id="message" name="message" rows="5" 
-                      class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
-                      placeholder="Tell us how we can help you..."></textarea>
-          </div>
-          
-          <button type="submit" 
-                  class="w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors hover-lift">
-            Send Message
-          </button>
-        </form>
-      </div>
-
-      <!-- Contact Information -->
-      <div class="space-y-6">
+    <!-- Contact Information -->
+    <div class="max-w-2xl mx-auto">
+      <div class="grid gap-6 mb-12">
         <!-- Email -->
         <div class="glass-card p-6 hover-lift">
           <div class="flex items-start">
@@ -82,10 +45,10 @@
               </svg>
             </div>
             <div>
-              <h4 class="text-lg font-semibold text-white mb-1">Email Support</h4>
-              <p class="text-gray-400 mb-2">Get help with any questions or issues</p>
-              <a href="mailto:support@timetracker.dev" class="text-blue-400 hover:text-blue-300 transition-colors">
-                support@timetracker.dev
+              <h4 class="text-lg font-semibold text-white mb-1">Email</h4>
+              <p class="text-gray-400 mb-2">Contact me via email</p>
+              <a href="mailto:davab@example.com" class="text-blue-400 hover:text-blue-300 transition-colors">
+                davab@example.com
               </a>
             </div>
           </div>
@@ -100,77 +63,40 @@
               </svg>
             </div>
             <div>
-              <h4 class="text-lg font-semibold text-white mb-1">Open Source</h4>
-              <p class="text-gray-400 mb-2">Contribute to the project or report issues</p>
-              <a href="https://github.com/timetracker/timetracker" class="text-blue-400 hover:text-blue-300 transition-colors">
-                github.com/timetracker
+              <h4 class="text-lg font-semibold text-white mb-1">GitHub</h4>
+              <p class="text-gray-400 mb-2">My projects and source code</p>
+              <a href="https://github.com/dave2281" class="text-blue-400 hover:text-blue-300 transition-colors" target="_blank">
+                github.com/dave2281
               </a>
             </div>
           </div>
         </div>
 
-        <!-- Documentation -->
+        <!-- Telegram -->
         <div class="glass-card p-6 hover-lift">
           <div class="flex items-start">
-            <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+              <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
               </svg>
             </div>
             <div>
-              <h4 class="text-lg font-semibold text-white mb-1">Documentation</h4>
-              <p class="text-gray-400 mb-2">Learn how to use all features effectively</p>
-              <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">
-                View Documentation
+              <h4 class="text-lg font-semibold text-white mx-1 mb-1">Telegram</h4>
+              <p class="text-gray-400 mb-2">Quick messaging contact</p>
+              <a href="https://t.me/davab2281" class="text-blue-400 hover:text-blue-300 transition-colors" target="_blank">
+                @davab2281
               </a>
             </div>
           </div>
         </div>
 
-        <!-- Community -->
-        <div class="glass-card p-6 hover-lift">
-          <div class="flex items-start">
-            <div class="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2v-6a2 2 0 012-2h8z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m6-4H9m6 8H9"></path>
-              </svg>
-            </div>
-            <div>
-              <h4 class="text-lg font-semibold text-white mb-1">Community Forum</h4>
-              <p class="text-gray-400 mb-2">Connect with other users and share tips</p>
-              <a href="#" class="text-blue-400 hover:text-blue-300 transition-colors">
-                Join Discussion
-              </a>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
-
-    <!-- FAQ Section -->
-    <div class="glass-card p-8">
-      <h3 class="text-2xl font-bold text-white mb-6 text-center">Frequently Asked Questions</h3>
-      <div class="space-y-6">
-        <div class="border-b border-gray-700 pb-6">
-          <h4 class="text-lg font-semibold text-white mb-2">How secure is my data?</h4>
-          <p class="text-gray-400">Your data is protected with industry-standard encryption and security measures. We never share your personal information with third parties.</p>
-        </div>
-        
-        <div class="border-b border-gray-700 pb-6">
-          <h4 class="text-lg font-semibold text-white mb-2">Can I export my time tracking data?</h4>
-          <p class="text-gray-400">Yes, you can export your data in various formats including CSV and PDF for reporting and backup purposes.</p>
-        </div>
-        
-        <div class="border-b border-gray-700 pb-6">
-          <h4 class="text-lg font-semibold text-white mb-2">Is there a mobile app available?</h4>
-          <p class="text-gray-400">The web application is fully responsive and works great on mobile devices. Native mobile apps are planned for future releases.</p>
-        </div>
-        
-        <div>
-          <h4 class="text-lg font-semibold text-white mb-2">How can I contribute to the project?</h4>
-          <p class="text-gray-400">This is an open-source project! You can contribute by reporting bugs, suggesting features, or submitting pull requests on GitHub.</p>
-        </div>
+      
+      <!-- Additional Information -->
+      <div class="glass-card p-6 text-center">
+        <p class="text-gray-400">
+          Developer of the Time Tracker application. Ready to discuss project questions, improvement suggestions, or technical support.
+        </p>
       </div>
     </div>
   </div>
