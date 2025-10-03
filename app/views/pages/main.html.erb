@@ -8,6 +8,9 @@
           <div class="px-3 py-1 text-xs bg-blue-600 text-white rounded-full">
             <%= Current.user.active_timers_count %>/3 timers
           </div>
+          <div class="px-3 py-1 text-xs bg-blue-600 text-white rounded-full">
+            <%= Current.user.deeds.count %>/30 tasks
+          </div>
         </div>
         
         <!-- Navigation Links -->
@@ -120,7 +123,7 @@
         <nav class="flex items-center gap-1">
           <!-- Previous button -->
           <% if @pagy.prev %>
-            <%= link_to root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers).merge(page: @pagy.prev)), 
+            <%= link_to root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers, :limit).merge(page: @pagy.prev)), 
                 class: "pagination-btn pagination-nav" do %>
               <span class="sr-only">Previous</span>
               ←
@@ -138,7 +141,7 @@
               <% if item == @pagy.page %>
                 <span class="pagination-btn pagination-current"><%= item %></span>
               <% else %>
-                <%= link_to item, root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers).merge(page: item)), 
+                <%= link_to item, root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers, :limit).merge(page: item)), 
                     class: "pagination-btn" %>
               <% end %>
             <% elsif item == :gap %>
@@ -148,7 +151,7 @@
 
           <!-- Next button -->
           <% if @pagy.next %>
-            <%= link_to root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers).merge(page: @pagy.next)), 
+            <%= link_to root_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers, :limit).merge(page: @pagy.next)), 
                 class: "pagination-btn pagination-nav" do %>
               <span class="sr-only">Next</span>
               →
@@ -284,5 +287,3 @@
     border: 0;
   }
 </style>
-
-
