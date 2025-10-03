@@ -20,7 +20,13 @@ class User < ApplicationRecord
     update!(confirmed_at: Time.current, confirmation_token: nil)
   end
 
+  def active_timers_count
+    daily_logs.where(timer_is_active: true).count
+  end
 
+  def can_start_timer?
+    active_timers_count < 3
+  end
 
   private
 

@@ -21,7 +21,17 @@
       </div>
       <% if @deed.description.present? %>
         <div class="mt-2">
-          <p class="text-gray-400 text-sm"><%= @deed.description %></p>
+          <button onclick="toggleDescription()" class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors text-sm group">
+            <svg id="description-arrow" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+            <span>Description</span>
+          </button>
+          <div id="description-content" class="mt-2 overflow-hidden transition-all duration-300 ease-in-out" style="height: 0;">
+            <div class="pb-2">
+              <p class="text-gray-300 text-sm leading-relaxed bg-gray-800/30 rounded-md p-3 border-l-2 border-blue-500 whitespace-pre-wrap"><%= @deed.description %></p>
+            </div>
+          </div>
         </div>
       <% end %>
     </div>
@@ -94,7 +104,6 @@
             <%= form.label :finished, class: "text-white text-sm cursor-pointer select-none" do %>
               <span class="flex items-center space-x-1">
                 <span id="status-icon" class="<%= @deed.finished? ? 'text-green-400' : 'text-gray-400' %>">
-                  <%= @deed.finished? ? '✓' : '○' %>
                 </span>
                 <span id="status-text" class="text-xs"><%= @deed.finished? ? 'Done' : 'Mark Done' %></span>
               </span>
@@ -113,29 +122,61 @@
 
   <script>
     function toggleStatusIndicator(checkbox) {
-      const icon = document.getElementById('status-icon');
       const text = document.getElementById('status-text');
       const submitBtn = checkbox.form.querySelector('input[type="submit"]');
       
       if (checkbox.checked) {
-        icon.textContent = '✓';
-        icon.className = 'text-green-400';
         text.textContent = 'Done';
         submitBtn.textContent = 'Complete';
         submitBtn.className = 'px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors text-xs hover-lift';
       } else {
-        icon.textContent = '○';
-        icon.className = 'text-gray-400';
         text.textContent = 'Mark Done';
         submitBtn.textContent = 'Update';
         submitBtn.className = 'px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors text-xs hover-lift';
       }
     }
+
+    let isDescriptionOpen = false;
+
+    function toggleDescription() {
+      const content = document.getElementById('description-content');
+      const arrow = document.getElementById('description-arrow');
+      
+      if (!isDescriptionOpen) {
+        // Открываем - используем auto для полной высоты
+        content.style.height = 'auto';
+        arrow.style.transform = 'rotate(180deg)';
+        isDescriptionOpen = true;
+      } else {
+        // Закрываем
+        content.style.height = '0';
+        arrow.style.transform = 'rotate(0deg)';
+        isDescriptionOpen = false;
+      }
+    }
+
+    // Автоматически показываем описание при загрузке страницы
+    document.addEventListener('turbo:load', function() {
+      setTimeout(() => {
+        if (document.getElementById('description-content')) {
+          toggleDescription(); // Открываем по умолчанию
+        }
+      }, 100);
+    });
   </script>
 </div>
 
 <script>
+    // ГЛОБАЛЬНАЯ ПЕРЕМЕННАЯ для хранения интервала
+    let globalTimerInterval = null;
+
     document.addEventListener("turbo:load", () => {
+        // ИСПРАВЛЕНИЕ: Очищаем любые существующие интервалы при загрузке
+        if (globalTimerInterval) {
+            clearInterval(globalTimerInterval);
+            globalTimerInterval = null;
+        }
+
         const timerDisplay = document.getElementById("timer-display");
         const indicator = document.getElementById("timer-indicator");
         const startButton = document.getElementById("start-timer");
@@ -145,7 +186,6 @@
 
         const deedId = startButton.getAttribute("data-deed-id");
 
-        let timerInterval = null;
         let startTime = null;
         let baseTime = 0;
         let isRunning = false;
@@ -181,17 +221,19 @@
         }
 
         function startTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
+            // ИСПРАВЛЕНИЕ: Используем глобальную переменную
+            if (globalTimerInterval) {
+                clearInterval(globalTimerInterval);
             }
             
-            timerInterval = setInterval(updateDisplay, 1000);
+            globalTimerInterval = setInterval(updateDisplay, 1000);
         }
 
         function stopTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
+            // ИСПРАВЛЕНИЕ: Используем глобальную переменную
+            if (globalTimerInterval) {
+                clearInterval(globalTimerInterval);
+                globalTimerInterval = null;
             }
         }
 
@@ -301,7 +343,24 @@
         });
 
         initTimer();
+        
         // Убираем периодические проверки, которые могут спамить ошибками
         // setInterval(initTimer, 30000);
+    });
+
+    // ИСПРАВЛЕНИЕ: Очищаем интервал при выходе со страницы
+    document.addEventListener("turbo:before-visit", () => {
+        if (globalTimerInterval) {
+            clearInterval(globalTimerInterval);
+            globalTimerInterval = null;
+        }
+    });
+
+    // Дополнительная очистка при выгрузке страницы
+    window.addEventListener("beforeunload", () => {
+        if (globalTimerInterval) {
+            clearInterval(globalTimerInterval);
+            globalTimerInterval = null;
+        }
     });
 </script>

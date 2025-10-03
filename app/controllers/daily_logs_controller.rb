@@ -2,31 +2,25 @@ class DailyLogsController < ApplicationController
   before_action :set_dailylog, only: %i[ edit update destroy ]
 
   def start_timer
-    # Simple rate limiting - max 10 timer operations per minute per user
-    cache_key = "timer_operations:#{Current.user.id}"
-    operations_count = Rails.cache.read(cache_key) || 0
-
-    if operations_count >= 10
-      render json: { error: "Too many timer operations. Please wait a moment." }, status: :too_many_requests
-      return
-    end
-
-    Rails.cache.write(cache_key, operations_count + 1, expires_in: 1.minute)
-
     deed = Current.user.deeds.find(params[:deed_id])
 
-    # Проверяем лимит активных таймеров заранее
-    active_count = Current.user.daily_logs.active_timers.count
-    if active_count >= 3
+    # УПРОЩЕНИЕ: Просто останавливаем любой активный таймер для этого дела
+    deed.daily_logs.where(timer_is_active: true).update_all(
+      timer_is_active: false,
+      end_time: Time.current
+    )
+
+    # АВТООЧИСТКА перед проверкой лимита: убираем старые зависшие таймеры (старше 4 часов)
+    Current.user.daily_logs.where(timer_is_active: true)
+      .where("start_time < ?", 4.hours.ago)
+      .update_all(timer_is_active: false, end_time: Time.current)
+
+    # ПРОСТАЯ ПРОВЕРКА ЛИМИТА: используем метод модели
+    unless Current.user.can_start_timer?
       render json: {
-        error: "You have reached the maximum number of active timers (3). Please stop some timers before starting new ones."
+        error: "Maximum 3 active timers allowed. Please stop some timers first."
       }, status: :unprocessable_entity
       return
-    end
-
-    # Останавливаем активный таймер если есть
-    if deed.timer_running?
-      deed.active_timer.stop_timer!
     end
 
     # Создаем новый активный таймер
@@ -56,24 +50,23 @@ class DailyLogsController < ApplicationController
 
   def stop_timer
     deed = Current.user.deeds.find(params[:deed_id])
-    active_timer = deed.active_timer
 
-    if active_timer
-      active_timer.stop_timer!
-      elapsed = active_timer.end_time - active_timer.start_time
+    # УПРОЩЕНИЕ: Останавливаем все активные таймеры для этого дела
+    active_timers = deed.daily_logs.where(timer_is_active: true)
 
-      render json: {
-        running: false,
-        elapsed_time: elapsed.to_i,
-        today_formatted: deed.today
-      }
-    else
-      render json: {
-        running: false,
-        elapsed_time: 0,
-        today_formatted: deed.today
-      }
+    elapsed_time = 0
+    active_timers.each do |timer|
+      timer.update!(timer_is_active: false, end_time: Time.current)
+      if timer.start_time
+        elapsed_time = (Time.current - timer.start_time).to_i
+      end
     end
+
+    render json: {
+      running: false,
+      elapsed_time: elapsed_time,
+      today_formatted: deed.today
+    }
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Task not found" }, status: :not_found
   end
@@ -82,7 +75,9 @@ class DailyLogsController < ApplicationController
 
   def timer_status
     deed = Current.user.deeds.find(params[:deed_id])
-    active_timer = deed.active_timer
+
+    # УПРОЩЕНИЕ: Просто ищем активный таймер для этого дела
+    active_timer = deed.daily_logs.where(timer_is_active: true).first
 
     if active_timer
       elapsed = Time.current - active_timer.start_time

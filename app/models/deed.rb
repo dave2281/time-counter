@@ -32,11 +32,13 @@ class Deed < ApplicationRecord
   end
 
   def timer_running?
-    daily_logs.active_timers.exists?
+    # УПРОЩЕНИЕ: Просто проверяем есть ли активные таймеры
+    daily_logs.where(timer_is_active: true).exists?
   end
 
   def active_timer
-    daily_logs.active_timers.first
+    # УПРОЩЕНИЕ: Берем первый активный таймер
+    daily_logs.where(timer_is_active: true).first
   end
 
   def max_deeds_to_create
