@@ -86,6 +86,12 @@ xerial*.*
 config/master.key
 config/credentials/*.key
 
+# Deployment scripts with sensitive data (passwords, IPs, keys)
+manual_deploy.sh
+deploy.sh
+deploy_*.sh
+*.deploy
+
 # Security reports
 brakeman_report.txt
 security_report.txt
@@ -95,3 +101,9 @@ security_report.txt
 *.dump
 backup/
 /config/master.key
+
+# Any files with server credentials or sensitive configuration
+server_config.yml
+credentials.txt
+secrets.txt
+*.secret
