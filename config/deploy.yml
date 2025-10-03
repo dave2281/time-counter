@@ -7,7 +7,7 @@ image: dave2281/time_tracker2
 # Deploy to these servers.
 servers:
   web:
-    - 85.9.207.230
+    - 164.92.182.94
   # job:
   #   hosts:
   #     - 192.168.0.1

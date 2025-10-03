@@ -14,9 +14,13 @@ users = []
 end
 puts "Создано пользователей: #{User.count}"
 
-User.create!(email_address: "admin@gmail.com",
-             password_digest: BCrypt::Password.create('password123')
+# Создаём подтверждённого админа
+admin = User.create!(
+  email_address: "admin@example.com",
+  password_digest: BCrypt::Password.create('password123')
 )
+admin.confirm!  # Подтверждаем аккаунт
+puts "Создан подтверждённый админ: #{admin.email_address} (подтверждён: #{admin.confirmed?})"
 
 deeds = []
 users.each do |user|
@@ -25,8 +29,8 @@ users.each do |user|
       user: user,
       title: "Дело ##{i + 1} для #{user.email_address}",
       description: "Описание для дела ##{i + 1}",
-      color: ['red', 'orange', 'green'].sample,
-      finished: [true, false].sample,
+      color: [ 'red', 'orange', 'green' ].sample,
+      finished: [ true, false ].sample,
       total_time: nil
     )
   end
@@ -35,8 +39,8 @@ puts "Создано дел: #{Deed.count}"
 
 deeds.each do |deed|
   4.times do
-    start_time = Faker::Time.between(from: 5.years.ago, to: Time.zone.now)
-    end_time = start_time + rand(10..50).hours + rand(0..59).minutes + rand(0.59).seconds
+    start_time = rand(5.years.ago..Time.zone.now)
+    end_time = start_time + rand(10..50).hours + rand(0..59).minutes + rand(0..59).seconds
     DailyLog.create!(
       deed: deed,
       user: deed.user,

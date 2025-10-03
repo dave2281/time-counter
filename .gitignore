@@ -94,3 +94,4 @@ security_report.txt
 *.sql
 *.dump
 backup/
+/config/master.key
