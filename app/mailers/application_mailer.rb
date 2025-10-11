@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "from@exampke.com"
+  default from: "noreply@mg.timetracker.rubydevelopers.org"
   layout "mailer"
 end

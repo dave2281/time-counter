@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get 'signup', to: 'users#new'
   post 'signup', to: 'users#create'
   root "pages#main"
-  # get "calendar", to: "pages#calendar", as: :calendar
+  
   resources :deeds
   resources :users
   post "daily_logs/toggle_timer", to: "daily_logs#toggle_timer"
@@ -14,7 +14,9 @@ Rails.application.routes.draw do
 
   get "/contacts", to: "pages#contacts", as: :contacts
   get "/about-project", to: "pages#about_project", as: :about_project
-
+  
+  # Profile updates via PATCH
+  patch "/update_profile", to: "pages#update_profile", as: :update_profile
 
   resource :session
   resources :passwords, param: :token

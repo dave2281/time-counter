@@ -58,19 +58,28 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: ENV["DOMAIN"], protocol: "https" }
-
-  # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: "smtp.mailgun.org",
-    port: 587,
-    domain: ENV["DOMAIN"],
-    user_name: ENV["MAILGUN_SMTP_LOGIN"],
-    password: ENV["MAILGUN_SMTP_PASSWORD"],
-    authentication: :plain,
-    enable_starttls_auto: true
+  config.action_mailer.default_url_options = { 
+    host: (Rails.application.credentials.mailgun&.[](:full_domain) || ENV["DOMAIN"] || "164.92.182.94"), 
+    protocol: "https" 
   }
+
+  # Configure Mailgun SMTP for email delivery
+  config.action_mailer.delivery_method = :smtp
+  
+  # Only configure Mailgun SMTP if credentials are available
+  if Rails.application.credentials.mailgun.present?
+    config.action_mailer.smtp_settings = {
+      address: "smtp.mailgun.org",
+      port: 2525,
+      domain: Rails.application.credentials.mailgun[:domain],
+      user_name: Rails.application.credentials.mailgun[:smtp_login],
+      password: Rails.application.credentials.mailgun[:smtp_password],
+      authentication: :plain,
+      enable_starttls_auto: true,
+      open_timeout: 30,
+      read_timeout: 30
+    }
+  end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

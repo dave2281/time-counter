@@ -1,8 +1,57 @@
 # ⏱️ Time Tracker
 
-A modern, secure task management application with real-time time tracking capabilities built with Ruby on Rails 8.
+A modern, secure task management application with real-time time tracking capabilities built with Ruby on Rails 8.## 🚀 Production Deployment
 
-![Rails](https://img.shields.io/badge/Rails-8.0.1-red.svg)
+### Using Kamal (Recommended)
+
+1. **Setup environment variables**:
+```bash
+cp .env.example .env
+# Fill in all required values in .env
+```
+
+2. **Configure Kamal secrets**:
+```bash
+mkdir -p .kamal
+echo "KAMAL_REGISTRY_PASSWORD=your_docker_password" > .kamal/secrets
+echo "RAILS_MASTER_KEY=$(cat config/master.key)" >> .kamal/secrets
+```
+
+3. **Deploy**:
+```bash
+kamal setup  # First time only
+kamal deploy # Subsequent deployments
+```
+
+### Manual Docker Deployment
+
+```bash
+# Build and push image
+docker build -t your-registry/time-tracker .
+docker push your-registry/time-tracker
+
+# Run on server
+docker run -d \
+  -p 3000:3000 \
+  -e RAILS_ENV=production \
+  -e SECRET_KEY_BASE=your_secret_key \
+  -v time_tracker_db:/rails/storage \
+  your-registry/time-tracker
+```
+
+## 🔐 Security Features
+
+- ✅ CSRF Protection enabled
+- ✅ Secure password hashing with BCrypt
+- ✅ HttpOnly and Secure cookies
+- ✅ Content Security Policy (CSP)
+- ✅ Security headers (XSS, Frame options, etc.)
+- ✅ Input validation and sanitization
+- ✅ Rate limiting on timer operations
+- ✅ User authorization on all resources
+- ✅ Regular security scanning with Brakeman
+- ✅ Environment variables for sensitive data
+- ✅ Gitignore configured for security fileshttps://img.shields.io/badge/Rails-8.0.1-red.svg)
 ![Ruby](https://img.shields.io/badge/Ruby-3.3+-red.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
@@ -54,7 +103,17 @@ git clone https://github.com/dave2281/time-counter.git
 cd time-counter
 ```
 
-### 2. Install dependencies
+### 2. Environment Setup
+
+```bash
+# Copy the environment variables template
+cp .env.example .env
+
+# Edit .env file and fill in your configuration
+# Generate a secret key with: rails secret
+```
+
+### 3. Install dependencies
 
 ```bash
 # Install Ruby gems
@@ -64,7 +123,7 @@ bundle install
 npm install
 ```
 
-### 3. Setup the database
+### 4. Setup the database
 
 ```bash
 # Create and migrate the database
@@ -75,7 +134,7 @@ rails db:migrate
 rails db:seed
 ```
 
-### 4. Build assets
+### 5. Build assets
 
 ```bash
 # Build Tailwind CSS and JavaScript
@@ -85,7 +144,7 @@ npm run build
 npm run build:dev
 ```
 
-### 5. Start the development server
+### 6. Start the development server
 
 ```bash
 # Start Rails server
@@ -125,7 +184,7 @@ Visit `http://localhost:3000` to access the application.
 
 - ✅ CSRF Protection enabled
 - ✅ Secure password hashing with BCrypt
-- ✅ HttpOnly and Secure cookies
+- ✅ HttpsOnly and Secure cookies
 - ✅ Content Security Policy (CSP)
 - ✅ Security headers (XSS, Frame options, etc.)
 - ✅ Input validation and sanitization

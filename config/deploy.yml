@@ -7,7 +7,7 @@ image: dave2281/time_tracker2
 # Deploy to these servers.
 servers:
   web:
-    - 164.92.182.94
+    - <%= ENV['DEPLOY_SERVER_IP'] %>
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -19,13 +19,13 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
   ssl: true
-  host: timetracker.rubydevelopers.org
+  host: <%= ENV['DEPLOY_HOST'] %>
 
 # Credentials for your image host.
 registry:
   # Specify the registry server, if you're not using Docker Hub
   # server: registry.digitalocean.com / ghcr.io / ...
-  username: 'dave2281'
+  username: <%= ENV['DOCKER_USERNAME'] %>
 
   # Always use an access token rather than real password when possible.
   password:

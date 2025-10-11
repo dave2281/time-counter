@@ -41,4 +41,30 @@ class PagesController < ApplicationController
 
   def contacts
   end
+
+  def update_profile
+    user = Current.user
+    
+    if params[:user][:password].present?
+      if user.update(profile_params)
+        render json: { success: true, message: "Profile updated successfully!" }
+      else
+        render json: { success: false, errors: user.errors.full_messages }
+      end
+    else
+      # Update without password change
+      user_params_without_password = profile_params.except(:password, :password_confirmation)
+      if user.update(user_params_without_password)
+        render json: { success: true, message: "Profile updated successfully!" }
+      else
+        render json: { success: false, errors: user.errors.full_messages }
+      end
+    end
+  end
+
+  private
+
+  def profile_params
+    params.require(:user).permit(:email_address, :password, :password_confirmation)
+  end
 end

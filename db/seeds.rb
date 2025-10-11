@@ -1,52 +1,9 @@
-# Очищаем старые данные
-User.destroy_all
-Deed.destroy_all
-DailyLog.destroy_all
-Session.destroy_all
+# This file should remain empty for production.
+# Use rails console or admin interface to create users.
 
-# Создаём пользователей
-users = []
-5.times do |i|
-  users << User.create!(
-    email_address: "user#{i + 1}@example.com",
-    password_digest: BCrypt::Password.create('password123')
-  )
+# For development only:
+if Rails.env.development?
+  puts "Development seed data can be added here if needed"
+  puts "Current users count: #{User.count}"
+  puts "Current deeds count: #{Deed.count}"
 end
-puts "Создано пользователей: #{User.count}"
-
-# Создаём подтверждённого админа
-admin = User.create!(
-  email_address: "admin@example.com",
-  password_digest: BCrypt::Password.create('password123')
-)
-admin.confirm!  # Подтверждаем аккаунт
-puts "Создан подтверждённый админ: #{admin.email_address} (подтверждён: #{admin.confirmed?})"
-
-deeds = []
-users.each do |user|
-  20.times do |i|
-    deeds << Deed.create!(
-      user: user,
-      title: "Дело ##{i + 1} для #{user.email_address}",
-      description: "Описание для дела ##{i + 1}",
-      color: [ 'red', 'orange', 'green' ].sample,
-      finished: [ true, false ].sample,
-      total_time: nil
-    )
-  end
-end
-puts "Создано дел: #{Deed.count}"
-
-deeds.each do |deed|
-  4.times do
-    start_time = rand(5.years.ago..Time.zone.now)
-    end_time = start_time + rand(10..50).hours + rand(0..59).minutes + rand(0..59).seconds
-    DailyLog.create!(
-      deed: deed,
-      user: deed.user,
-      start_time: start_time,
-      end_time: end_time
-    )
-  end
-end
-puts "Создано дневных логов: #{DailyLog.count}"

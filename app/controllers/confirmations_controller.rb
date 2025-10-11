@@ -1,14 +1,16 @@
 class ConfirmationsController < ApplicationController
+  allow_unauthenticated_access
+  
   def show
     user = User.find_by(confirmation_token: params[:token])
 
     if user&.confirmed?
-      redirect_to root_path, alert: "Уже подтверждено."
+      redirect_to new_session_path, alert: "Account already confirmed. Please sign in."
     elsif user
       user.confirm!
-      redirect_to sign_in_path, notice: "Email подтверждён. Теперь вы можете войти."
+      redirect_to new_session_path, notice: "Email confirmed! You can now sign in."
     else
-      redirect_to root_path, alert: "Недействительная ссылка подтверждения."
+      redirect_to new_session_path, alert: "Invalid confirmation link."
     end
   end
 end

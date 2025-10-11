@@ -100,6 +100,7 @@ security_report.txt
 *.sql
 *.dump
 backup/
+backups/
 /config/master.key
 
 # Any files with server credentials or sensitive configuration
@@ -107,3 +108,45 @@ server_config.yml
 credentials.txt
 secrets.txt
 *.secret
+
+# Windows Zone.Identifier files (security risk)
+*:Zone.Identifier
+
+# Database files (might contain user data)
+*.sqlite3
+*.db
+db/production.sqlite3
+
+# SSL certificates and keys
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+
+# Docker secrets
+docker-compose.override.yml
+.env.production
+.env.staging
+
+# IDE and editor files
+/.vscode/
+.idea/
+*.sublime-*
+.atom/
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary and cache files
+node_modules/
+.npm
+.yarn-integrity
+yarn-error.log
+npm-debug.log*
+
+# Application specific sensitive files
+config/application.yml
+config/secrets.yml
