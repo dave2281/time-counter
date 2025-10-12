@@ -2,3 +2,4 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import "./navbar.js"
+import "./deed_show.js"

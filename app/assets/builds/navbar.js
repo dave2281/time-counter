@@ -99,4 +99,13 @@ document.addEventListener("turbo:before-visit", function() {
     }
   }
 });
+function initBodyFadeIn() {
+  document.body.classList.add("opacity-0");
+  setTimeout(() => {
+    document.body.classList.remove("opacity-0");
+    document.body.classList.add("transition-opacity", "duration-300", "opacity-100");
+  }, 50);
+}
+document.addEventListener("DOMContentLoaded", initBodyFadeIn);
+document.addEventListener("turbo:load", initBodyFadeIn);
 //# sourceMappingURL=/assets/navbar.js.map

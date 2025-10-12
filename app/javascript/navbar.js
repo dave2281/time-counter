@@ -130,3 +130,17 @@ document.addEventListener('turbo:before-visit', function() {
     }
   }
 });
+
+// Body fade-in effect
+function initBodyFadeIn() {
+  // Enhanced minimal functionality
+  document.body.classList.add('opacity-0');
+  setTimeout(() => {
+    document.body.classList.remove('opacity-0');
+    document.body.classList.add('transition-opacity', 'duration-300', 'opacity-100');
+  }, 50);
+}
+
+// Initialize body fade-in on load
+document.addEventListener('DOMContentLoaded', initBodyFadeIn);
+document.addEventListener('turbo:load', initBodyFadeIn);
