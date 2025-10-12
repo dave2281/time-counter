@@ -1,20 +1,21 @@
 Rails.application.routes.draw do
   get "/confirm", to: "confirmations#show", as: :confirm
 
-  get 'signup', to: 'users#new'
-  post 'signup', to: 'users#create'
-  root "pages#main"
-  
+  get "signup", to: "users#new"
+  post "signup", to: "users#create"
+  get "pages/main", to: "pages#main"
+  root "pages#index"
+
   resources :deeds
   resources :users
   post "daily_logs/toggle_timer", to: "daily_logs#toggle_timer"
   post "daily_logs/start_timer", to: "daily_logs#start_timer"
   post "daily_logs/stop_timer", to: "daily_logs#stop_timer"
-  get 'daily_logs/timer_status', to: 'daily_logs#timer_status'
+  get "daily_logs/timer_status", to: "daily_logs#timer_status"
 
   get "/contacts", to: "pages#contacts", as: :contacts
   get "/about-project", to: "pages#about_project", as: :about_project
-  
+
   # Profile updates via PATCH
   patch "/update_profile", to: "pages#update_profile", as: :update_profile
 

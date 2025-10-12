@@ -1,4 +1,14 @@
 class PagesController < ApplicationController
+  allow_unauthenticated_access only: [ :about_project, :contacts, :index ]
+
+  def index
+    if authenticated?
+      redirect_to pages_main_path
+    else
+      redirect_to about_project_path
+    end
+  end
+
   def main
     @deeds = Current.user.deeds
 
@@ -44,7 +54,7 @@ class PagesController < ApplicationController
 
   def update_profile
     user = Current.user
-    
+
     if params[:user][:password].present?
       if user.update(profile_params)
         render json: { success: true, message: "Profile updated successfully!" }
@@ -52,7 +62,6 @@ class PagesController < ApplicationController
         render json: { success: false, errors: user.errors.full_messages }
       end
     else
-      # Update without password change
       user_params_without_password = profile_params.except(:password, :password_confirmation)
       if user.update(user_params_without_password)
         render json: { success: true, message: "Profile updated successfully!" }

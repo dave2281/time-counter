@@ -39,6 +39,10 @@ db/*.sqlite3
 /public/cache
 /public/stylesheets/compiled
 /public/system/*
+/public/assets/*
+!/public/assets/.keep
+public/packs/
+public/packs-test/
 /spec/tmp/*
 /cache
 /capybara*
@@ -95,6 +99,8 @@ deploy_*.sh
 # Security reports
 brakeman_report.txt
 security_report.txt
+security_*.txt
+*.security
 
 # Backup files that might contain sensitive data
 *.sql
@@ -108,14 +114,18 @@ server_config.yml
 credentials.txt
 secrets.txt
 *.secret
+*.secrets
 
 # Windows Zone.Identifier files (security risk)
 *:Zone.Identifier
+*.Zone.Identifier
 
 # Database files (might contain user data)
 *.sqlite3
 *.db
 db/production.sqlite3
+db/*.sqlite3*
+database.yml.local
 
 # SSL certificates and keys
 *.pem
@@ -123,11 +133,56 @@ db/production.sqlite3
 *.crt
 *.csr
 *.p12
+*.pfx
+cert/
+certs/
 
 # Docker secrets
 docker-compose.override.yml
 .env.production
 .env.staging
+.dockerenv
+
+# Kamal secrets directory
+.kamal/secrets*
+.kamal/*.secret
+.kamal/hosts*
+
+# Application specific sensitive files
+config/application.yml.local
+config/database.yml.local
+config/secrets.yml.local
+config/*.secret
+
+# Server configuration files
+nginx.conf.local
+apache.conf.local
+server.conf
+
+# API keys and tokens
+*.token
+*.apikey
+api_keys.yml
+tokens.yml
+
+# Private keys
+private_key*
+id_rsa*
+id_ed25519*
+*.private
+
+# Session stores
+config/session_store.yml
+
+# Log files that might contain sensitive data
+log/production.log*
+log/staging.log*
+log/sensitive*.log
+
+# Temporary credential files
+tmp/credentials*
+tmp/secrets*
+tmp/*.secret
 
 # IDE and editor files
 /.vscode/
@@ -150,3 +205,60 @@ npm-debug.log*
 # Application specific sensitive files
 config/application.yml
 config/secrets.yml
+
+# Development and test specific files that shouldn't be shared
+.byebug_history
+.pry_history
+.history
+.irb_history
+
+# Editor temporary files
+*~
+*.swp
+*.swo
+.*.swp
+.*.swo
+
+# Coverage reports (might contain sensitive paths)
+coverage/
+.coverage
+.nyc_output
+
+# Profiling data
+.ruby-prof/
+tmp/profile_*
+
+# Capistrano deployment
+config/deploy/*
+Capfile.lock
+
+# Spring (Rails application preloader)
+.spring
+
+# RSpec failure tracking
+.rspec_status
+
+# Vagrant
+.vagrant/
+Vagrantfile.local
+
+# Terraform (if used for infrastructure)
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+.terraform/
+
+# Local development overrides
+docker-compose.local.yml
+.env.local
+.env.development.local
+.env.test.local
+
+# System files
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+*.tmp
+*.temp
+public

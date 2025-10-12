@@ -1,0 +1,108 @@
+<!-- Ultra Minimal Navbar -->
+<nav class="navbar-minimal">
+  <div class="container mx-auto max-w-7xl px-6">
+    <div class="flex items-center justify-between h-16">
+      
+      <!-- Brand -->
+      <div class="flex items-center">
+        <div class="brand-logo">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <span class="brand-text">TimeTracker</span>
+      </div>
+
+      <!-- Navigation Links (Desktop) -->
+      <div class="hidden md:flex items-center space-x-8">
+        <% if authenticated? %>
+          <%= link_to pages_main_path, class: "nav-link #{nav_active_class(request.path == pages_main_path)}" do %>
+            Tasks
+          <% end %>
+        <% end %>
+        
+        <%= link_to about_project_path, class: "nav-link #{nav_active_class(request.path == about_project_path)}" do %>
+          About Project
+        <% end %>
+        
+        <%= link_to contacts_path, class: "nav-link #{nav_active_class(request.path == contacts_path)}" do %>
+          Contacts
+        <% end %>
+      </div>
+
+      <!-- User Actions -->
+      <div class="flex items-center space-x-4">
+        <% if authenticated? && Current.user %>
+          <!-- Quick Stats -->
+          <div class="hidden lg:flex items-center space-x-3 text-sm text-gray-400">
+            <span class="stat-item">
+              <span class="stat-value"><%= Current.user.active_timers_count %></span>
+              <span class="stat-label">active</span>
+            </span>
+            <span class="stat-divider">|</span>
+            <span class="stat-item">
+              <span class="stat-value"><%= Current.user.deeds.count %></span>
+              <span class="stat-label">tasks</span>
+            </span>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex items-center space-x-2">
+            <% if request.path == pages_main_path %>
+              <%= link_to new_deed_path, class: "btn-primary" do %>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                <span class="hidden sm:inline">New</span>
+              <% end %>
+            <% end %>
+
+            <%= button_to session_path, method: :delete, class: "btn-secondary", title: "Logout" do %>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+              </svg>
+            <% end %>
+          </div>
+        <% else %>
+          <%= link_to new_session_path, class: "btn-primary" do %>
+            Sign In
+          <% end %>
+        <% end %>
+
+        <!-- Mobile Menu Button -->
+        <button type="button" class="mobile-menu-btn md:hidden" id="mobile-menu-button">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu md:hidden">
+      <div class="py-4 space-y-2">
+        <% if authenticated? %>
+          <%= link_to pages_main_path, class: "mobile-link #{nav_active_class(request.path == pages_main_path)}" do %>
+            Tasks
+          <% end %>
+        <% end %>
+        
+        <%= link_to about_project_path, class: "mobile-link #{nav_active_class(request.path == about_project_path)}" do %>
+          About Project
+        <% end %>
+        
+        <%= link_to contacts_path, class: "mobile-link #{nav_active_class(request.path == contacts_path)}" do %>
+          Contacts
+        <% end %>
+
+        <% if authenticated? && Current.user %>
+          <div class="mobile-stats">
+            <span><%= Current.user.active_timers_count %> active timers</span>
+            <span>•</span>
+            <span><%= Current.user.deeds.count %> total tasks</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>

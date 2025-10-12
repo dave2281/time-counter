@@ -1,25 +1,7 @@
-<div class="min-h-screen">
-  <!-- Header -->
-  <div class="bg-gray-900 border-b border-gray-800">
-    <div class="container mx-auto max-w-6xl px-4 py-3">
-      <div class="flex items-center justify-between">
-        <h1 class="text-xl font-semibold text-white">Contacts</h1>        
-        <div class="flex items-center gap-4">
-          <%= link_to root_path, class: "text-sm text-gray-400 hover:text-white transition-colors" do %>
-            Tasks
-          <% end %>
-          <%= link_to about_project_path, class: "text-sm text-gray-400 hover:text-white transition-colors" do %>
-            About Project
-          <% end %>
-        </div>
-        
-        <div class="flex items-center gap-2">
-          <%= button_to "Exit", session_path, method: :delete,
-            class: "px-3 py-1.5 text-xs text-gray-400 hover:text-red-400 transition-colors" %>
-        </div>
-      </div>
-    </div>
-  </div>  <div class="container mx-auto max-w-4xl py-8 px-4">
+<% content_for :page_title, "Contacts" %>
+
+<div class="min-h-screen pt-8">
+  <div class="container mx-auto max-w-4xl py-8 px-4">
     <!-- Hero Section -->
     <div class="text-center mb-12">
       <div class="inline-flex items-center justify-center w-16 h-16 bg-green-600 rounded-full mb-4">
@@ -81,7 +63,7 @@
               </svg>
             </div>
             <div>
-              <h4 class="text-lg font-semibold text-white mx-1 mb-1">Telegram</h4>
+              <h4 class="text-lg font-semibold text-white mb-1">Telegram</h4>
               <p class="text-gray-400 mb-2">Quick messaging contact</p>
               <a href="https://t.me/flawless_turtle" class="text-blue-400 hover:text-blue-300 transition-colors" target="_blank">
                 @flawless_turtle

@@ -58,14 +58,14 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = true
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { 
-    host: (Rails.application.credentials.mailgun&.[](:full_domain) || ENV["DOMAIN"] || "164.92.182.94"), 
-    protocol: "https" 
+  config.action_mailer.default_url_options = {
+    host: (Rails.application.credentials.mailgun&.[](:full_domain) || ENV["DOMAIN"] || "164.92.182.94"),
+    protocol: "https"
   }
 
   # Configure Mailgun SMTP for email delivery
   config.action_mailer.delivery_method = :smtp
-  
+
   # Only configure Mailgun SMTP if credentials are available
   if Rails.application.credentials.mailgun.present?
     config.action_mailer.smtp_settings = {

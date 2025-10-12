@@ -1,27 +1,6 @@
-<div class="min-h-screen">
-  <!-- Header -->
-  <div class="bg-gray-900 border-b border-gray-800">
-    <div class="container mx-auto max-w-6xl px-4 py-3">
-      <div class="flex items-center justify-between">
-        <h1 class="text-xl font-semibold text-white">About Project</h1>
-        
-        <!-- Navigation Links -->
-        <div class="flex items-center gap-4">
-          <%= link_to root_path, class: "text-sm text-gray-400 hover:text-white transition-colors" do %>
-            Tasks
-          <% end %>
-          <%= link_to contacts_path, class: "text-sm text-gray-400 hover:text-white transition-colors" do %>
-            Contacts
-          <% end %>
-        </div>
-        
-        <div class="flex items-center gap-2">
-          <%= button_to "Exit", session_path, method: :delete,
-            class: "px-3 py-1.5 text-xs text-gray-400 hover:text-red-400 transition-colors" %>
-        </div>
-      </div>
-    </div>
-  </div>
+<% content_for :page_title, "About Project" %>
+
+<div class="min-h-screen pt-8">
 
   <div class="container mx-auto max-w-4xl py-8 px-4">
     <!-- Hero Section -->
