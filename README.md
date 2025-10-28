@@ -200,6 +200,32 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Dave** - [GitHub](https://github.com/dave2281)
 
+## 📋 To-Do
+
+### High Priority
+- [ ] Implement timer notifications/alerts
+- [ ] Add export functionality (CSV, PDF reports)
+- [ ] Email notifications for task deadlines
+- [ ] Markdown for description text field
+
+### Medium Priority
+- [ ] Task categories/tags system
+- [ ] Calendar view for tasks
+- [ ] Advanced filtering and search
+- [ ] Dark/Light theme toggle
+- [ ] Statistics dashboard with charts
+
+### Low Priority
+- [ ] Integration with external calendars
+- [ ] Multi-language support (i18n)
+
+### Bug Fixes & Improvements
+- [x] Fix description accordion toggle after timer operations
+- [x] Implement native HTML `<details>` for reliable accordion
+- [ ] Optimize database queries for large datasets
+- [ ] Add comprehensive test coverage
+- [ ] Improve mobile responsiveness
+
 ---
 
 ⭐ **If you found this project helpful, please give it a star!**
