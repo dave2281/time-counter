@@ -6,7 +6,7 @@
     <div class="max-w-4xl mx-auto px-4 py-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
-          <%= link_to root_path, class: "text-gray-400 hover:text-white transition-colors text-sm" do %>
+          <%= link_to pages_main_path, class: "text-gray-400 hover:text-white transition-colors text-sm" do %>
             ← Tasks
           <% end %>
           <div class="h-4 w-px bg-gray-700"></div>
@@ -21,24 +21,23 @@
       </div>
       <% if @deed.description.present? %>
         <div class="mt-2">
-          <button class="toggle-description-btn flex items-center space-x-2 text-gray-400 hover:text-white transition-colors text-sm group" data-target="description-content">
-            <svg id="description-arrow" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-            <span>Description</span>
-          </button>
-          <div id="description-content" class="description-hidden mt-2 overflow-hidden transition-all duration-300 ease-in-out">
-            <div class="pb-2">
+          <details open class="group">
+            <summary class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors text-sm cursor-pointer list-none">
+              <svg class="w-4 h-4 transform transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+              <span>Description</span>
+            </summary>
+            <div class="mt-2 pb-2">
               <p class="text-gray-300 text-sm leading-relaxed bg-gray-800/30 rounded-md p-3 border-l-2 border-blue-500 whitespace-pre-wrap"><%= @deed.description %></p>
             </div>
-          </div>
+          </details>
         </div>
       <% end %>
     </div>
   </div>
 
   <div class="max-w-4xl mx-auto px-4 py-4 space-y-4">
-
     <!-- Timer Section - compact -->
     <div class="glass-effect rounded-lg p-4">
       <div class="flex items-center justify-between mb-3">

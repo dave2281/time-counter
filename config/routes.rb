@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get "signup", to: "users#new"
   post "signup", to: "users#create"
   get "pages/main", to: "pages#main"
-  root "pages#index"
+  root "pages#about_project"
 
   resources :deeds
   resources :users
@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   get "daily_logs/timer_status", to: "daily_logs#timer_status"
 
   get "/contacts", to: "pages#contacts", as: :contacts
-  get "/about-project", to: "pages#about_project", as: :about_project
 
   # Profile updates via PATCH
   patch "/update_profile", to: "pages#update_profile", as: :update_profile

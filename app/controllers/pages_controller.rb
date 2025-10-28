@@ -1,13 +1,5 @@
 class PagesController < ApplicationController
-  allow_unauthenticated_access only: [ :about_project, :contacts, :index ]
-
-  def index
-    if authenticated?
-      redirect_to pages_main_path
-    else
-      redirect_to about_project_path
-    end
-  end
+  allow_unauthenticated_access only: [ :about_project, :contacts]
 
   def main
     @deeds = Current.user.deeds

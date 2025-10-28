@@ -31,7 +31,11 @@ class DailyLogsController < ApplicationController
     )
 
     if daily_log.save
+      # Обновляем общее время задачи
+      deed.total_time_add
+
       render json: {
+        success: true,
         running: true,
         start_time: daily_log.start_time.to_f * 1000,
         elapsed_time: 0
@@ -62,10 +66,15 @@ class DailyLogsController < ApplicationController
       end
     end
 
+    # Обновляем общее время задачи
+    deed.total_time_add
+
     render json: {
+      success: true,
       running: false,
       elapsed_time: elapsed_time,
-      today_formatted: deed.today
+      total_time: deed.total_time,
+      today_time: deed.today
     }
   rescue ActiveRecord::RecordNotFound
     render json: { error: "Task not found" }, status: :not_found
