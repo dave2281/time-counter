@@ -183,18 +183,6 @@ Visit `http://localhost:3000` to access the application.
 - **View details**: Click on any task to see detailed view with timer controls
 - **Navigate**: Use pagination to browse through your tasks
 
-## 🔐 Security Features
-
-- ✅ CSRF Protection enabled
-- ✅ Secure password hashing with BCrypt
-- ✅ HttpsOnly and Secure cookies
-- ✅ Content Security Policy (CSP)
-- ✅ Security headers (XSS, Frame options, etc.)
-- ✅ Input validation and sanitization
-- ✅ Rate limiting on timer operations
-- ✅ User authorization on all resources
-- ✅ Regular security scanning with Brakeman
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
