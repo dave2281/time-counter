@@ -1,6 +1,7 @@
 # ⏱️ Time Tracker
 
-A modern, secure task management application with real-time time tracking capabilities built with Ruby on Rails 8.## 🚀 Production Deployment
+A modern, secure task management application with real-time time tracking capabilities built with Ruby on Rails 8.
+## 🚀 Production Deployment
 
 ### Using Kamal (Recommended)
 
@@ -51,7 +52,9 @@ docker run -d \
 - ✅ User authorization on all resources
 - ✅ Regular security scanning with Brakeman
 - ✅ Environment variables for sensitive data
-- ✅ Gitignore configured for security fileshttps://img.shields.io/badge/Rails-8.0.1-red.svg)
+- ✅ Gitignore configured for security files 
+
+![Rails](https://img.shields.io/badge/Rails-8.0.1-red.svg)
 ![Ruby](https://img.shields.io/badge/Ruby-3.3+-red.svg)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
