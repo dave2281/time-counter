@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= content_for(:title) || "TimeTracker" %></title>
+    <title><%= content_for(:title) || "Time Tracker - Task Management & Time Tracking" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- basic seo -->
+    <meta name="description" content="<%= content_for(:description) || 'Free time tracking and task management application. Track your work time, manage tasks, and boost productivity.' %>">
+    <meta name="keywords" content="time tracker, task management, productivity app, time logging, work timer">
+    <meta name="robots" content="index, follow">
+    
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 

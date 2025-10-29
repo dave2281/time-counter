@@ -1,5 +1,8 @@
 class PagesController < ApplicationController
-  allow_unauthenticated_access only: [ :about_project, :contacts]
+  allow_unauthenticated_access only: [ :about_project, :contacts, :index ]
+
+  def index
+  end
 
   def main
     @deeds = Current.user.deeds

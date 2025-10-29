@@ -11,7 +11,8 @@
           </svg>
         </div>
         <span class="brand-text">
-          <%= link_to 'TimeTracker', pages_main_path if authenticated? %>
+          <%= authenticated? ? link_to('TimeTracker', pages_main_path) : link_to('TimeTracker', root_path) %>
+
         </span>
       </div>
 

@@ -25,7 +25,7 @@ class User < ApplicationRecord
   end
 
   def can_start_timer?
-    active_timers_count < 3
+    active_timers_count < 1
   end
 
   private

@@ -116,8 +116,9 @@ function startTimer(deedId) {
   }).then((response) => response.json()).then((data) => {
     if (data.success) {
       startTime = new Date(data.start_time);
+      const display = document.getElementById("timer-display");
+      if (display) display.textContent = "00:00:00";
       updateTimerUI(true);
-      updateTimerDisplay();
       startTimerUpdates();
     } else {
       alert("Failed to start timer: " + (data.error || "Unknown error"));
