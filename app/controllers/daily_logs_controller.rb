@@ -55,7 +55,6 @@ class DailyLogsController < ApplicationController
   def stop_timer
     deed = Current.user.deeds.find(params[:deed_id])
 
-    # УПРОЩЕНИЕ: Останавливаем все активные таймеры для этого дела
     active_timers = deed.daily_logs.where(timer_is_active: true)
 
     elapsed_time = 0

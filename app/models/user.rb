@@ -12,6 +12,11 @@ class User < ApplicationRecord
 
   before_create :generate_confirmation_token
 
+  before_update :assign_role_if_confirmed, if: :confirmed?
+
+  delegate :premium?, :max_deeds, :max_active_timers, :premium_status, :status_badge, to: :premium_service
+  delegate :active_timers_count, :can_start_timer?, to: :timer_service
+
   def confirmed?
     confirmed_at.present?
   end
@@ -20,15 +25,23 @@ class User < ApplicationRecord
     update!(confirmed_at: Time.current, confirmation_token: nil)
   end
 
-  def active_timers_count
-    daily_logs.where(timer_is_active: true).count
+  def assign_role_if_confirmed
+    ::Roles::Assigner.new(self).call
   end
 
-  def can_start_timer?
-    active_timers_count < 1
+  def assign_premium_role(amount_of_days)
+    ::Roles::Assigner.new(self).assign_premium_role_command(amount_of_days)
   end
 
   private
+
+  def premium_service
+    @premium_service ||= PremiumService.new(self)
+  end
+
+  def timer_service
+    @timer_service ||= TimerService.new(self)
+  end
 
   def generate_confirmation_token
     self.confirmation_token = SecureRandom.urlsafe_base64

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_01_125118) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_29_145053) do
   create_table "daily_logs", force: :cascade do |t|
     t.datetime "start_time"
     t.datetime "end_time"
@@ -52,6 +52,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_01_125118) do
     t.string "confirmation_token"
     t.datetime "confirmation_sent_at"
     t.datetime "confirmed_at"
+    t.string "roles", default: "user", null: false
+    t.datetime "premium_start"
+    t.datetime "premium_until"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end

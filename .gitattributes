@@ -7,3 +7,14 @@ db/schema.rb linguist-generated
 vendor/* linguist-vendored
 config/credentials/*.yml.enc diff=rails_credentials
 config/credentials.yml.enc diff=rails_credentials
+
+# Exclude dependencies from language statistics
+node_modules/** linguist-vendored
+package-lock.json linguist-vendored
+
+# Exclude generated files
+public/assets/** linguist-generated
+app/assets/builds/** linguist-generated
+
+# Mark ERB templates as Ruby
+*.erb linguist-language=Ruby

@@ -66,45 +66,17 @@
   <div class="container mx-auto max-w-6xl py-4 px-4">
     <!-- Compact filter buttons -->
     <div class="flex justify-center flex-wrap gap-1 mb-4">
-      <%= form_with url: pages_main_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers)), method: :get, local: true, class: "inline" do %>
-        <%= hidden_field_tag :show_finished, params[:show_finished], id: "show_finished_1" %>
-        <%= hidden_field_tag :show_all_tasks, params[:show_all_tasks], id: "show_all_tasks_1" %>
-        <%= hidden_field_tag :show_running_timers, params[:show_running_timers], id: "show_running_timers_1" %>
-        <%= hidden_field_tag :show_just_created, params[:show_just_created] == 'true' ? 'false' : 'true', id: "show_just_created_1" %>
-        <button type="submit" class="filter-btn <%= 'active' if params[:show_just_created] == 'true' %>">
-          New
-        </button>
-      <% end %>
-
-      <%= form_with url: pages_main_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers)), method: :get, local: true, class: "inline" do %>
-        <%= hidden_field_tag :show_just_created, params[:show_just_created], id: "show_just_created_2" %>
-        <%= hidden_field_tag :show_all_tasks, params[:show_all_tasks], id: "show_all_tasks_2" %>
-        <%= hidden_field_tag :show_running_timers, params[:show_running_timers], id: "show_running_timers_2" %>
-        <%= hidden_field_tag :show_finished, params[:show_finished] == 'true' ? 'true' : 'false', id: "show_finished_2" %>
-        <button type="submit" class="filter-btn <%= 'active' if params[:show_finished] == 'true' %>">
-          Done
-        </button>
-      <% end %>
+      <%= link_to "New", pages_main_path(filter: "new"), 
+          class: "filter-btn #{params[:filter] == 'new' ? 'active' : ''}" %>
       
-      <%= form_with url: pages_main_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers)), method: :get, local: true, class: "inline" do %>
-        <%= hidden_field_tag :show_just_created, params[:show_just_created], id: "show_just_created_3" %>
-        <%= hidden_field_tag :show_finished, params[:show_finished], id: "show_finished_3" %>
-        <%= hidden_field_tag :show_all_tasks, params[:show_all_tasks], id: "show_all_tasks_3" %>
-        <%= hidden_field_tag :show_running_timers, params[:show_running_timers] == 'true' ? 'false' : 'true', id: "show_running_timers_3" %>
-        <button type="submit" class="filter-btn <%= 'active' if params[:show_running_timers] == 'true' %>">
-          Active
-        </button>
-      <% end %>
-
-      <%= form_with url: pages_main_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers)), method: :get, local: true, class: "inline" do %>
-        <%= hidden_field_tag :show_just_created, params[:show_just_created], id: "show_just_created_4" %>
-        <%= hidden_field_tag :show_finished, params[:show_finished], id: "show_finished_4" %>
-        <%= hidden_field_tag :show_running_timers, params[:show_running_timers], id: "show_running_timers_4" %>
-        <%= hidden_field_tag :show_all_tasks, params[:show_all_tasks] == 'true' ? 'false' : 'true', id: "show_all_tasks_4" %>
-        <button type="submit" class="filter-btn <%= 'active' if params[:show_all_tasks] == 'true' %>">
-          All
-        </button>
-      <% end %>
+      <%= link_to "Done", pages_main_path(filter: "done"), 
+          class: "filter-btn #{params[:filter] == 'done' ? 'active' : ''}" %>
+      
+      <%= link_to "Active", pages_main_path(filter: "active"), 
+          class: "filter-btn #{params[:filter] == 'active' ? 'active' : ''}" %>
+      
+      <%= link_to "All", pages_main_path(filter: "all"), 
+          class: "filter-btn #{params[:filter] == 'all' || params[:filter].blank? ? 'active' : ''}" %>
     </div>
 
     <!-- Responsive task grid -->
@@ -113,15 +85,15 @@
         <%= link_to deed, class: "block glass-effect rounded-lg p-4 hover:bg-gray-800/50 transition-all hover-lift group" do %>
           <div class="flex justify-between items-center mb-2">
             <div class="flex items-center space-x-2">
-              <% if deed.timer_running? %>
+              <% if deed.total_time && !deed.finished? %>
                 <div class="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
                 <span class="text-green-400 text-xs font-medium">Active</span>
+              <% elsif deed.total_time.nil? %>
+                <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                <span class="text-blue-400 text-xs">New</span>
               <% elsif deed.finished? %>
                 <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
                 <span class="text-gray-400 text-xs">Done</span>
-              <% else %>
-                <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                <span class="text-blue-400 text-xs">Ready</span>
               <% end %>
             </div>
             <span class="text-gray-500 text-xs font-mono">
@@ -152,7 +124,7 @@
         <nav class="flex items-center gap-1">
           <!-- Previous button -->
           <% if @pagy.prev %>
-            <%= link_to pages_main_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers, :limit).merge(page: @pagy.prev)), 
+            <%= link_to pages_main_path(params.permit(:filter, :limit).merge(page: @pagy.prev)), 
                 class: "pagination-btn pagination-nav" do %>
               <span class="sr-only">Previous</span>
               ←
@@ -170,7 +142,7 @@
               <% if item == @pagy.page %>
                 <span class="pagination-btn pagination-current"><%= item %></span>
               <% else %>
-                <%= link_to item, pages_main_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers, :limit).merge(page: item)), 
+                <%= link_to item, pages_main_path(params.permit(:filter, :limit).merge(page: item)), 
                     class: "pagination-btn" %>
               <% end %>
             <% elsif item == :gap %>
@@ -180,7 +152,7 @@
 
           <!-- Next button -->
           <% if @pagy.next %>
-            <%= link_to pages_main_path(params.permit(:show_just_created, :show_finished, :show_all_tasks, :show_running_timers, :limit).merge(page: @pagy.next)), 
+            <%= link_to pages_main_path(params.permit(:filter, :limit).merge(page: @pagy.next)), 
                 class: "pagination-btn pagination-nav" do %>
               <span class="sr-only">Next</span>
               →
