@@ -96,9 +96,9 @@
                 <span class="text-gray-400 text-xs">Done</span>
               <% end %>
             </div>
-            <span class="text-gray-500 text-xs font-mono">
-              <%= deed.total_time.presence || "00:00" %>
-            </span>
+              <span class="text-gray-500 text-xs font-mono">
+                Today: <%= deed.today.presence || "00h00m00s" %>
+              </span>
           </div>
           
           <h3 class="text-sm font-medium text-white mb-2 leading-tight group-hover:text-blue-300 transition-colors line-clamp-2">
@@ -112,7 +112,7 @@
           <% end %>
           
           <div class="text-xs text-gray-500">
-            Today: <%= deed.today.presence || "00:00" %>
+            Total: <%= deed.total_time.presence || "00h00m00s" %>
           </div>
         <% end %>
       <% end %>
