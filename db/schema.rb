@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_29_145053) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_31_123612) do
   create_table "daily_logs", force: :cascade do |t|
     t.datetime "start_time"
     t.datetime "end_time"

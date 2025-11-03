@@ -2,7 +2,12 @@ class DailyLogsController < ApplicationController
   before_action :set_dailylog, only: %i[ edit update destroy ]
 
   def start_timer
+    Rails.logger.info "=== START TIMER REQUEST ==="
+    Rails.logger.info "User: #{Current.user.email_address}"
+    Rails.logger.info "Deed ID: #{params[:deed_id]}"
+
     deed = Current.user.deeds.find(params[:deed_id])
+    Rails.logger.info "Deed found: #{deed.title}"
 
     # УПРОЩЕНИЕ: Просто останавливаем любой активный таймер для этого дела
     deed.daily_logs.where(timer_is_active: true).update_all(
@@ -16,9 +21,16 @@ class DailyLogsController < ApplicationController
       .update_all(timer_is_active: false, end_time: Time.current)
 
     # ПРОСТАЯ ПРОВЕРКА ЛИМИТА: используем метод модели
-    unless Current.user.can_start_timer?
+    active_count = Current.user.active_timers_count
+    can_start = Current.user.can_start_timer?
+    max_timers = Current.user.max_active_timers
+
+    Rails.logger.info "Active timers: #{active_count}, Max: #{max_timers}, Can start: #{can_start}"
+
+    unless can_start
+      Rails.logger.warn "Timer limit reached!"
       render json: {
-        error: "Maximum 3 active timers allowed. Please stop some timers first."
+        error: "Maximum #{max_timers} active timers allowed. Please stop some timers first."
       }, status: :unprocessable_entity
       return
     end
@@ -31,6 +43,7 @@ class DailyLogsController < ApplicationController
     )
 
     if daily_log.save
+      Rails.logger.info "Timer started successfully!"
       # Обновляем общее время задачи
       deed.total_time_add
 
@@ -41,14 +54,17 @@ class DailyLogsController < ApplicationController
         elapsed_time: 0
       }
     else
+      Rails.logger.error "Failed to save daily_log: #{daily_log.errors.full_messages}"
       render json: {
         error: daily_log.errors.full_messages.first || "Failed to start timer"
       }, status: :unprocessable_entity
     end
   rescue ActiveRecord::RecordNotFound
+    Rails.logger.error "Task not found"
     render json: { error: "Task not found" }, status: :not_found
   rescue => e
     Rails.logger.error "Timer start error: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
     render json: { error: "Unable to start timer. Please try again." }, status: :internal_server_error
   end
 
