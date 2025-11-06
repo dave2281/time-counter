@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get "signup", to: "users#new"
   post "signup", to: "users#create"
   get "pages/main", to: "pages#main"
+  # get "pages/pomodoro", to: "pages#pomodoro", as: :pomodoro
   root "pages#about_project"
 
   resources :deeds
