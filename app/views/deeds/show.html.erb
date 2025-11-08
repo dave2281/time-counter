@@ -1,4 +1,5 @@
 <% content_for :title, @deed.title %>
+<%= javascript_include_tag "deed_show", "data-turbo-track": "reload", type: "module" %>
 
 <div class="min-h-screen">
   <!-- Compact header -->
@@ -118,5 +119,7 @@
     </div>
   </div>
 </div>
+
+
 </div>
 

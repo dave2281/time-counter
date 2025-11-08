@@ -1,7 +1,11 @@
 // app/javascript/deed_show.js
 var timerUpdateInterval = null;
 var startTime = null;
+var lastNotificationMinute = -1;
 function initDeedShowPage() {
+  if (Notification.permission === "default") {
+    Notification.requestPermission();
+  }
   const checkbox = document.querySelector('input[type="checkbox"][id*="finished"]');
   if (checkbox) {
     checkbox.addEventListener("change", function() {
@@ -120,6 +124,17 @@ function updateTimerDisplay() {
   const display = document.getElementById("timer-display");
   if (display) {
     display.textContent = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  }
+  const totalMinutes = Math.floor(elapsed / 60);
+  if (totalMinutes > 0 && totalMinutes % 30 === 0 && totalMinutes !== lastNotificationMinute) {
+    lastNotificationMinute = totalMinutes;
+    if (Notification.permission === "granted") {
+      const deedTitle = document.querySelector("h1")?.textContent || "Task";
+      new Notification(deedTitle, {
+        body: `Timer: ${totalMinutes} minutes passed`,
+        icon: "/favicon.ico"
+      });
+    }
   }
 }
 function updateTimerUI(isRunning) {

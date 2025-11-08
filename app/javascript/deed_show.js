@@ -1,8 +1,14 @@
 // Deed show page functionality
 let timerUpdateInterval = null;
 let startTime = null;
+let lastNotificationMinute = -1;
 
 function initDeedShowPage() {
+  // Request permission
+  if (Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+  
   // Initialize toggle status indicator
   const checkbox = document.querySelector('input[type="checkbox"][id*="finished"]');
   if (checkbox) {
@@ -33,8 +39,6 @@ function toggleStatusIndicator(checkbox) {
 function initTimer() {
   const startBtn = document.getElementById('start-timer');
   const stopBtn = document.getElementById('stop-timer');
-  const display = document.getElementById('timer-display');
-  const indicator = document.getElementById('timer-indicator');
 
   if (startBtn) {
     startBtn.addEventListener('click', function() {
@@ -155,6 +159,19 @@ function updateTimerDisplay() {
   const display = document.getElementById('timer-display');
   if (display) {
     display.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+  
+  const totalMinutes = Math.floor(elapsed / 60);
+  if (totalMinutes > 0 && totalMinutes % 30 === 0 && totalMinutes !== lastNotificationMinute) {
+    lastNotificationMinute = totalMinutes;
+    
+    if (Notification.permission === "granted") {
+      const deedTitle = document.querySelector('h1')?.textContent || 'Task';
+      new Notification(deedTitle, {
+        body: `Timer: ${totalMinutes} minutes passed`,
+        icon: '/favicon.ico'
+      });
+    }
   }
 }
 

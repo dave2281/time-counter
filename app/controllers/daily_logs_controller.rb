@@ -35,7 +35,6 @@ class DailyLogsController < ApplicationController
       return
     end
 
-    # Создаем новый активный таймер
     daily_log = deed.daily_logs.build(
       user: Current.user,
       start_time: Time.current,
@@ -44,7 +43,6 @@ class DailyLogsController < ApplicationController
 
     if daily_log.save
       Rails.logger.info "Timer started successfully!"
-      # Обновляем общее время задачи
       deed.total_time_add
 
       render json: {
@@ -81,7 +79,6 @@ class DailyLogsController < ApplicationController
       end
     end
 
-    # Обновляем общее время задачи
     deed.total_time_add
 
     render json: {
