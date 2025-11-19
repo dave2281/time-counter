@@ -7,6 +7,11 @@ class PagesController < ApplicationController
   def main
     @deeds = Current.user.deeds
 
+    if params[:tag].present?
+      @deeds = @deeds.where("tags LIKE ?", "%\"#{params[:tag]}\"%")
+      @active_tag = params[:tag]
+    end
+
     case params[:filter]
     when "new"
       @deeds = @deeds.where(finished: false, total_time: nil)
@@ -17,7 +22,7 @@ class PagesController < ApplicationController
     when "running"
       @deeds = Deed.with_running_timers(Current.user.id)
     else
-      @deeds = Current.user.deeds
+      @deeds = Current.user.deeds unless params[:tag].present?
     end
 
     @deeds = @deeds.to_a if @deeds.respond_to?(:to_a) && !@deeds.is_a?(Array)

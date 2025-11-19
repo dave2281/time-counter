@@ -1,7 +1,9 @@
+require "json"
+
 class Deed < ApplicationRecord
   has_many :daily_logs, dependent: :destroy
   belongs_to :user
-  before_save :max_deeds_to_create
+  before_save :max_deeds_to_create, :better_tags
 
   validates_presence_of :title
 
@@ -45,6 +47,14 @@ class Deed < ApplicationRecord
       throw(:abort)
     end
   end
+
+  def better_tags
+    return if tags.blank?
+
+    cleaned_tags = tags.gsub(" ", "").split(",").map(&:downcase)
+    self.tags = cleaned_tags
+  end
+
 
   def self.with_running_timers(user_id)
     joins(:daily_logs)

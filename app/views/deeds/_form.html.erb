@@ -21,6 +21,15 @@
     </div>
 
     <div class="mb-4">
+      <%= form.label :tags, class: "block text-xs font-medium text-gray-300 mb-2" do %>
+        Tags
+      <% end%>
+      <%= form.text_field :tags, 
+          class: "w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm",
+          placeholder: "Enter tags..." %>
+    </div>
+
+    <div class="mb-4">
       <%= form.label :description, class: "block text-xs font-medium text-gray-300 mb-2" do %>
         Description
       <% end %>

@@ -1,15 +1,15 @@
 <% content_for :page_title, "Tasks" %>
 
 <!-- Profile Modal Checkbox -->
-<input type="checkbox" id="profile-modal" class="hidden">
+<input type="checkbox" id="profile-modal" class="hidden peer">
 
 <!-- Profile Modal -->
-<div class="transition-all duration-300" id="modal-overlay">
+<div class="hidden peer-checked:flex fixed inset-0 z-50 items-center justify-center transition-all duration-300" id="modal-overlay">
   <!-- Background blur -->
   <label for="profile-modal" class="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm cursor-pointer"></label>
   
   <!-- Modal content -->
-  <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-md border border-slate-600 transform scale-95 transition-transform duration-300">
+  <div class="relative bg-slate-800 rounded-xl shadow-2xl w-full max-w-md border border-slate-600 transform scale-95 peer-checked:scale-100 transition-transform duration-300 z-10">
     <!-- Close button -->
     <label for="profile-modal" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors cursor-pointer text-xl">
       ×
@@ -87,41 +87,56 @@
     <!-- Responsive task grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 mb-6">
       <% @records.each do |deed| %>
-        <%= link_to deed, class: "block glass-effect rounded-lg p-4 hover:bg-gray-800/50 transition-all hover-lift group" do %>
-          <div class="flex justify-between items-center mb-2">
-            <div class="flex items-center space-x-2">
-              <% if deed.total_time && !deed.finished? && !deed.timer_running? %>
-                <div class="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
-                <span class="text-green-400 text-xs font-medium">Active</span>
-              <% elsif deed.total_time.nil? && !deed.finished? %>
-                <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-                <span class="text-blue-400 text-xs">New</span>
-              <% elsif deed.finished? %>
-                <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                <span class="text-gray-400 text-xs">Done</span>
-              <% elsif deed.timer_running? %>
-                <span class="text-red-400 text-xs">Current working task</span>
-              <% end %>
-            </div>
+        <div class="glass-effect rounded-lg p-4 hover:bg-gray-800/50 transition-all hover-lift group">
+          <%= link_to deed, class: "block" do %>
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center space-x-2">
+                <% if deed.total_time && !deed.finished? && !deed.timer_running? %>
+                  <div class="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
+                  <span class="text-green-400 text-xs font-medium">Active</span>
+                <% elsif deed.total_time.nil? && !deed.finished? %>
+                  <div class="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
+                  <span class="text-blue-400 text-xs">New</span>
+                <% elsif deed.finished? %>
+                  <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                  <span class="text-gray-400 text-xs">Done</span>
+                <% elsif deed.timer_running? %>
+                  <span class="text-red-400 text-xs">Current working task</span>
+                <% end %>
+              </div>
               <span class="text-gray-500 text-xs font-mono">
                 Today: <%= deed.today.presence || "00h00m00s" %>
               </span>
-          </div>
-          
-          <h3 class="text-sm font-medium text-white mb-2 leading-tight group-hover:text-blue-300 transition-colors line-clamp-2">
-            <%= deed.title %>
-          </h3>
-          
-          <% if deed.description.present? %>
-            <p class="text-gray-400 text-xs mb-2 line-clamp-2">
-              <%= deed.description %>
-            </p>
+            </div>
+            
+            <h3 class="text-sm font-medium text-white mb-2 leading-tight group-hover:text-blue-300 transition-colors line-clamp-2">
+              <%= deed.title %>
+            </h3>
+            
+            <% if deed.description.present? %>
+              <p class="text-gray-400 text-xs mb-2 line-clamp-2">
+                <%= deed.description %>
+              </p>
+            <% end %>
+            
+            <div class="text-xs text-gray-500">
+              Total: <%= deed.total_time.presence || "00h00m00s" %>
+            </div>
           <% end %>
           
-          <div class="text-xs text-gray-500">
-            Total: <%= deed.total_time.presence || "00h00m00s" %>
-          </div>
-        <% end %>
+          <% if deed.tags.present? %>
+            <% tags_array = deed.tags.is_a?(String) ? JSON.parse(deed.tags) : deed.tags %>
+            <% if tags_array.any? %>
+              <div class="flex flex-wrap gap-2 mt-2" onclick="event.stopPropagation()">
+                <% tags_array.each do |tag| %>
+                  <%= link_to tag_filter_path(tag), class: "text-xs bg-slate-700 hover:bg-slate-600 border border-slate-600 hover:border-slate-500 text-slate-300 hover:text-white rounded-full px-3 py-1.5 transition-colors inline-block" do %>
+                    <%= tag %>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
       <% end %>
     </div>
 

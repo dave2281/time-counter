@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_31_123612) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_19_073743) do
   create_table "daily_logs", force: :cascade do |t|
     t.datetime "start_time"
     t.datetime "end_time"
@@ -32,6 +32,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_31_123612) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "tags", default: []
     t.index ["user_id"], name: "index_deeds_on_user_id"
   end
 
