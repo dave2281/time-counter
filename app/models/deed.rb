@@ -1,5 +1,3 @@
-require "json"
-
 class Deed < ApplicationRecord
   has_many :daily_logs, dependent: :destroy
   belongs_to :user
@@ -50,9 +48,12 @@ class Deed < ApplicationRecord
 
   def better_tags
     return if tags.blank?
-
-    cleaned_tags = tags.gsub(" ", "").split(",").map(&:downcase)
-    self.tags = cleaned_tags
+      self.tags =
+        if tags.is_a?(Array)
+          tags.map { |tag| tag.to_s.strip. downcase }. reject(&:blank?).uniq
+        else
+          tags. to_s.split(",").map { |tag| tag. strip.downcase }.reject(&:blank?).uniq
+        end
   end
 
 
