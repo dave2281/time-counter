@@ -81,15 +81,51 @@
       </div>
     </div>
 
-    <!-- Time Stats - compact combined container -->
+    <!-- Timeline - task dates -->
+    <div class="glass-effect rounded-lg p-4">
+      <h3 class="text-sm font-medium text-white mb-3 text-center">Timeline</h3>
+      
+      <div class="grid grid-cols-2 gap-4">
+        <div class="text-center">
+          <p class="text-gray-400 text-xs mb-1">Created</p>
+          <p class="text-sm font-semibold text-white"><%= @deed.created_at.strftime("%H:%M %d.%m.%Y") %></p>
+        </div>
+        
+        <div class="text-center">
+          <p class="text-gray-400 text-xs mb-1">Started</p>
+          <p class="text-sm font-semibold text-white">
+            <% if @deed.daily_logs.any? %>
+              <%= @deed.daily_logs.first.created_at.strftime("%H:%M %d.%m.%Y") %>
+            <% else %>
+              <span class="text-gray-500">Not started</span>
+            <% end %>
+          </p>
+        </div>
+        
+        <% if @deed.finished? %>
+          <div class="text-center col-span-2">
+            <p class="text-gray-400 text-xs mb-1">Finished</p>
+            <p class="text-sm font-semibold text-green-400">
+              <% if @deed.daily_logs.any? %>
+                <%= @deed.daily_logs.last.created_at.strftime("%H:%M %d.%m.%Y") %>
+              <% end %>
+            </p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Time Statistics - work time -->
     <div class="glass-effect rounded-lg p-4">
       <h3 class="text-sm font-medium text-white mb-3 text-center">Time Statistics</h3>
-      <div class="grid grid-cols-2 divide-x divide-gray-700">
-        <div class="text-center pr-3">
+      
+      <div class="grid grid-cols-2 gap-4">
+        <div class="text-center">
           <p class="text-gray-400 text-xs mb-1">Total Time</p>
           <p id="total-time" class="text-base font-semibold text-white"><%= @deed.total_time %></p>
         </div>
-        <div class="text-center pl-3">
+        
+        <div class="text-center">
           <p class="text-gray-400 text-xs mb-1">Today</p>
           <p id="today-time" class="text-base font-semibold text-white"><%= @deed.today %></p>
         </div>
@@ -133,7 +169,5 @@
     </div>
   </div>
 </div>
-
-
 </div>
 
