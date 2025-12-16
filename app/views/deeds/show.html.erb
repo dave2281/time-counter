@@ -14,6 +14,12 @@
           <h1 class="text-lg font-medium text-white truncate max-w-md"><%= @deed.title %></h1>
         </div>
         <div class="flex items-center gap-2">
+          <%= link_to export_deed_path(@deed, format: :csv), class: "px-3 py-1.5 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors flex items-center gap-1", title: "Export deed with logs" do %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            <span>Export</span>
+          <% end %>
           <%= link_to "Edit", edit_deed_path(@deed), class: "px-3 py-1.5 text-xs bg-gray-700 hover:bg-gray-600 text-white rounded-md transition-colors" %>
           <%= button_to "Delete", deed_path(@deed), method: :delete,
               data: { confirm: "Are you sure?" },
@@ -81,7 +87,6 @@
       </div>
     </div>
 
-    <!-- Timeline - task dates -->
     <div class="glass-effect rounded-lg p-4">
       <h3 class="text-sm font-medium text-white mb-3 text-center">Timeline</h3>
       

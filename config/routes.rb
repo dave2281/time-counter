@@ -8,7 +8,14 @@ Rails.application.routes.draw do
   # get "pages/pomodoro", to: "pages#pomodoro", as: :pomodoro
   root "pages#about_project"
 
-  resources :deeds
+  resources :deeds do
+    collection do
+      get :export, to: "deeds/exports#create"
+    end
+    member do
+      get :export, to: "deeds/exports#show"
+    end
+  end
   resources :users
   post "daily_logs/toggle_timer", to: "daily_logs#toggle_timer"
   post "daily_logs/start_timer", to: "daily_logs#start_timer"
