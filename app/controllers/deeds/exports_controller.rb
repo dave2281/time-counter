@@ -1,5 +1,5 @@
 class Deeds::ExportsController < ApplicationController
-  before_action :set_deed, only: [:show]
+  before_action :set_deed, only: [ :show ]
 
   def create
     @deeds = Current.user.deeds.includes(:daily_logs).order(created_at: :desc)
