@@ -1,6 +1,4 @@
 class Deeds::ExportsController < ApplicationController
-  before_action :set_deed, only: [ :show ]
-
   def create
     @deeds = Current.user.deeds.includes(:daily_logs).order(created_at: :desc)
 
@@ -10,18 +8,14 @@ class Deeds::ExportsController < ApplicationController
   end
 
   def show
+    @deed = Current.user.deeds.find(params[:id])
+
     respond_to do |format|
       format.csv { send_data export_deed_to_csv, filename: "deed_#{@deed.id}_#{Date.today}.csv", type: "text/csv" }
     end
   end
 
   private
-
-  def set_deed
-    @deed = Current.user.deeds.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    redirect_to pages_main_path, alert: "You don't have permission to export this deed."
-  end
 
   def export_to_csv
     require "csv"
@@ -55,9 +49,15 @@ class Deeds::ExportsController < ApplicationController
       csv << [ "Total Time", @deed.total_time ]
       csv << []
 
-      csv << [ "Date", "Start Time", "End Time", "Duration (seconds)", "Duration (formatted)", "Timer Active" ]
+      csv << [ "Date", "Start Time", "End Time", "Duration (formatted)", "Timer Active" ]
 
       @deed.daily_logs.order(created_at: :asc).each do |log|
+        duration_seconds = if log.end_time && log.start_time
+          (log.end_time - log.start_time).to_i
+        else
+          0
+        end
+
         csv << [
           log.start_time&.strftime("%Y-%m-%d") || log.created_at.strftime("%Y-%m-%d"),
           log.start_time&.strftime("%H:%M:%S") || "N/A",
