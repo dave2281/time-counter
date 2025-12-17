@@ -29,8 +29,16 @@ class User < ApplicationRecord
     ::Roles::Assigner.new(self).call
   end
 
-  def assign_premium_role(amount_of_days)
+  def assign_premium_role(amount_of_days = 30)
     ::Roles::Assigner.new(self).assign_premium_role_command(amount_of_days)
+  end
+
+  def remove_premium_role
+    update_columns(
+      roles: "user",
+      premium_start: nil,
+      premium_until: nil
+    )
   end
 
   private

@@ -5,10 +5,11 @@ module Roles
     end
 
     def call
-      if premium_purchase_confirmed?
+      if premium_purchase_confirmed? || has_active_premium?
+        return if has_active_premium?
         assign_premium_role
       else
-        assign_user_role
+        assign_user_role unless has_active_premium?
       end
     end
 
@@ -18,10 +19,17 @@ module Roles
 
     private
 
+    def has_active_premium?
+      @user.roles == "premium" &&
+        @user.premium_until.present? &&
+        @user.premium_until > Time.current
+    end
+
     def premium_purchase_confirmed?
       # Placeholder logic for checking premium purchase
       # In a real application, this would check the user's purchase status
       # @user.premium_purchase_confirmed?
+      false
     end
 
     def assign_premium_role(amount_of_days = 30)
