@@ -1,7 +1,7 @@
 class Deed < ApplicationRecord
   has_many :daily_logs, dependent: :destroy
   belongs_to :user
-  before_save :max_deeds_to_create, :better_tags
+  before_create :check_deeds_limit, :better_tags
 
   validates_presence_of :title
 
@@ -39,11 +39,13 @@ class Deed < ApplicationRecord
     daily_logs.where(timer_is_active: true).first
   end
 
-  def max_deeds_to_create
-    if user.deeds.count >= 20
-      errors.add(:base, "You have reached the maximum number of tasks (20). Please delete some tasks before creating new ones.")
+  def check_deeds_limit
+    max_allowed = user.max_deeds
+
+     if user.deeds.count >= max_allowed
+      errors.add(:base, "You have reached the maximum number of tasks (#{max_allowed}). Please delete some tasks before creating new ones.")
       throw(:abort)
-    end
+     end
   end
 
   def better_tags
